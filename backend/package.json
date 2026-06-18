@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+  "express": "^4.18",
+  "mongoose": "^8",
+  "typescript": "^5",
+  "jsonwebtoken": "^9",
+  "bcryptjs": "^2.4",
+  "zod": "^3",
+  "cors": "^2.8",
+  "dotenv": "^16",
+  "ts-node-dev": "^2"
+  }
+}
