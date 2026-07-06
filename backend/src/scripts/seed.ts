@@ -132,7 +132,9 @@ const seedDB = async () => {
       brand: "Michelin",
       sku: "MCH-PS4-22545R17",
       stock: 24,
-      images: [],
+      images: [
+        '../assets/pneu-michelin-pilot-sport-4.png'
+      ],
       specs: {
         Largura: "225mm",
         Perfil: "45",
@@ -153,7 +155,9 @@ const seedDB = async () => {
       brand: "OZ Racing",
       sku: "OZ-ULT-17X75",
       stock: 8,
-      images: [],
+      images: [
+        '../assets/roda-oz-racing-ultraleggera.png'
+      ],
       specs: {
         Diâmetro: '17"',
         Largura: '7.5"',
@@ -174,7 +178,9 @@ const seedDB = async () => {
       brand: "H&R",
       sku: "HR-SPRINGS-GOLFGTI-MK7",
       stock: 5,
-      images: [],
+      images: [
+        '../assets/suspensao-hr-springs-golf.jpg'
+      ],
       specs: {
         Rebaixamento: "30-35mm",
         Compatibilidade: "Golf GTI MK7/MK7.5",
@@ -195,7 +201,9 @@ const seedDB = async () => {
       brand: "Bilstein",
       sku: "BIL-B8-FRONT-PAIR",
       stock: 6,
-      images: [],
+      images: [
+        '../assets/amortecedor-bilstein-b8.png'
+      ],
       specs: {
         Tipo: "Monotubo",
         Gás: "Nitrogênio",
@@ -215,7 +223,9 @@ const seedDB = async () => {
       brand: "Motul",
       sku: "MOT-8100-XCP-5W30-5L",
       stock: 40,
-      images: [],
+      images: [
+        '../assets/oleo-motul-8100-5w30.png'
+      ],
       specs: {
         Viscosidade: "5W-30",
         Volume: "5 litros",
@@ -236,7 +246,9 @@ const seedDB = async () => {
       brand: "K&N",
       sku: "KN-69-TYPHOON-UNIV",
       stock: 12,
-      images: [],
+      images: [
+      '../assets/intake-kn-69-typhoon.png'
+      ],
       specs: {
         Tipo: "Short Ram",
         Filtro: "Cônico lavável",
@@ -257,7 +269,9 @@ const seedDB = async () => {
       brand: "Osram",
       sku: "OSR-LED-H4-6K-SEQ",
       stock: 30,
-      images: [],
+      images: [
+        '../assets/farol-led-h4-6000k.png'
+      ],
       specs: {
         Encaixe: "H4",
         Temperatura: "6000K",
@@ -278,7 +292,9 @@ const seedDB = async () => {
       brand: "JetStyle",
       sku: "JTS-PONT-OVAL-DBL-304",
       stock: 20,
-      images: [],
+      images: [
+        '../assets/ponteira-escape-oval-inox.png'
+      ],
       specs: {
         Material: "Inox 304",
         Acabamento: "Escovado",
@@ -299,7 +315,9 @@ const seedDB = async () => {
       brand: "Scorpion",
       sku: "SCO-EVO-CIVIC-15T-CB",
       stock: 3,
-      images: [],
+      images: [
+        '../assets/escape-scorpion-evo-civic.png'
+      ],
       specs: {
         Tipo: "Cat-Back",
         Compatibilidade: "Honda Civic 1.5T 2017-2023",
@@ -319,7 +337,9 @@ const seedDB = async () => {
       brand: "TuningParts",
       sku: "TP-AERO-CARB-GT-UNIV",
       stock: 7,
-      images: [],
+      images: [
+        '../assets/aerofolio-carbono-gt.png'
+      ],
       specs: {
         Material: "Fibra de carbono real",
         Peso: "1.8kg",
@@ -339,7 +359,9 @@ const seedDB = async () => {
       brand: "AutoLight",
       sku: "AL-RGB-KIT-4X50-BT",
       stock: 50,
-      images: [],
+      images: [
+        '../assets/led-interno-rgb.png'
+      ],
       specs: {
         Cores: "16 + modos dinâmicos",
         Tiras: "4x 50cm",

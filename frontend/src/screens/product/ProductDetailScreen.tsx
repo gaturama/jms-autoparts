@@ -77,7 +77,10 @@ export default function ProductDetailScreen() {
       { text: "Continuar", style: "cancel" },
       {
         text: "Ver carrinho",
-        onPress: () => navigation.navigate("CartTab" as never),
+        onPress: () => navigation.navigate("MainTabs", {
+          screen: "CartTab",
+          params: undefined,
+        }),
       },
     ]);
   };

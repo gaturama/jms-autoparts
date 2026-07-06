@@ -10,6 +10,7 @@ import { corsOptions } from './config/cors';
 import { env } from './config/env';
 import routes from './routes';
 import { errorMiddleware } from './middlewares/error.middleware';
+import path from 'path';
 
 const app = express();
 
@@ -31,6 +32,12 @@ if (env.isDev) app.use(morgan('dev'));
 app.get('/health', (_req, res) => res.json({ status: 'ok', env: env.NODE_ENV }));
 
 app.use('/api', routes);
+
+app.use(
+  "/assets",
+  express.static(path.join(__dirname, "../assets"))
+);
+
 
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Rota não encontrada' }));
 
