@@ -1,5 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../styles/colors';
 import { spacing, radius } from '../../styles/spacing';
 
@@ -23,7 +24,7 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
     activeOpacity={0.8}
     style={[styles.chip, isSelected && { borderColor: color, backgroundColor: color + '22' }]}
   >
-    <Text style={styles.icon}>{icon}</Text>
+    <Ionicons name="bag" size={14} color={isSelected ? color : colors.textSecondary} />
     <Text style={[styles.label, isSelected && { color: color, fontWeight: '700' }]}>
       {name}
     </Text>
@@ -43,6 +44,5 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     marginRight: spacing.sm,
   },
-  icon: { fontSize: 14 },
   label: { fontSize: 12, fontWeight: '500', color: colors.textSecondary },
 });

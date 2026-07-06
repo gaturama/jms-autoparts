@@ -28,7 +28,7 @@ export default function CategoryScreen() {
     <SafeAreaView style={styles.safe} edges={['top']}>
       <Header
         title={name}
-        subtitle={staticCat ? `${staticCat.icon} ${slug}` : undefined}
+        subtitle={staticCat ? slug : undefined}
         onBack={() => navigation.goBack()}
       />
 
@@ -59,7 +59,7 @@ export default function CategoryScreen() {
           }
           ListEmptyComponent={
             <EmptyState
-              emoji={staticCat?.icon ?? '📦'}
+              icon="cube-outline"
               title="Nenhum produto nesta categoria"
               subtitle="Volte em breve, estamos sempre atualizando o estoque."
               actionLabel="Voltar"

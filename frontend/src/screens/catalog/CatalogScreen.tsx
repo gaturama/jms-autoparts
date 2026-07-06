@@ -6,6 +6,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { AppStackParamList } from '../../types/navigation.types';
 import { ProductFilters } from '../../types/product.types';
 import { useProducts } from '../../hooks/useProducts';
@@ -52,7 +53,6 @@ export default function CatalogScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <Text style={styles.title}>CATÁLOGO</Text>
@@ -61,19 +61,18 @@ export default function CatalogScreen() {
               style={styles.actionBtn}
               onPress={() => navigation.navigate('Search')}
             >
-              <Text style={styles.actionIcon}>🔍</Text>
+              <Ionicons name="search-outline" size={14} color={colors.textSecondary} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.actionBtn}
               onPress={() => setShowSort(true)}
             >
-              <Text style={styles.actionIcon}>⇅</Text>
+              <Ionicons name="swap-vertical-outline" size={14} color={colors.textSecondary} />
               <Text style={styles.actionLabel} numberOfLines={1}>{currentSort}</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Category filter chips */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -101,7 +100,6 @@ export default function CatalogScreen() {
         <View style={styles.divider} />
       </View>
 
-      {/* Products */}
       {isLoading && products.length === 0 ? (
         <LoadingSpinner fullScreen label="Carregando produtos..." />
       ) : (
@@ -124,7 +122,7 @@ export default function CatalogScreen() {
           )}
           ListEmptyComponent={
             <EmptyState
-              emoji="📦"
+              icon="cube"
               title="Nenhum produto encontrado"
               subtitle="Tente mudar os filtros ou a categoria selecionada"
               actionLabel="Limpar filtros"
@@ -140,7 +138,6 @@ export default function CatalogScreen() {
         />
       )}
 
-      {/* Sort Modal */}
       <Modal visible={showSort} transparent animationType="slide" onRequestClose={() => setShowSort(false)}>
         <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowSort(false)}>
           <View style={styles.modalSheet}>
@@ -155,7 +152,7 @@ export default function CatalogScreen() {
                 <Text style={[styles.sortLabel, filters.sort === opt.value && styles.sortLabelActive]}>
                   {opt.label}
                 </Text>
-                {filters.sort === opt.value && <Text style={styles.sortCheck}>✓</Text>}
+                {filters.sort === opt.value && <Ionicons name="checkmark" size={18} color={colors.primary} />}
               </TouchableOpacity>
             ))}
           </View>

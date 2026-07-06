@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../../styles/colors';
-import { Button } from './Button';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { colors } from "../../styles/colors";
+import { Button } from "./Button";
+import { Ionicons } from "@expo/vector-icons";
 
 interface EmptyStateProps {
-  emoji?: string;
+  icon?: keyof typeof Ionicons.glyphMap;
   title: string;
   subtitle?: string;
   actionLabel?: string;
@@ -12,14 +13,19 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  emoji = '📭',
+  icon = "mail-open-outline",
   title,
   subtitle,
   actionLabel,
   onAction,
 }) => (
   <View style={styles.container}>
-    <Text style={styles.emoji}>{emoji}</Text>
+    <Ionicons
+      name={icon}
+      size={52}
+      color={colors.textMuted}
+      style={styles.icon}
+    />
     <Text style={styles.title}>{title}</Text>
     {!!subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
     {!!actionLabel && !!onAction && (
@@ -29,9 +35,25 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 );
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
-  emoji: { fontSize: 52, marginBottom: 16 },
-  title: { fontSize: 18, fontWeight: '700', color: colors.textPrimary, textAlign: 'center', marginBottom: 8 },
-  subtitle: { fontSize: 14, color: colors.textMuted, textAlign: 'center', lineHeight: 20 },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 32,
+  },
+  icon: { marginBottom: 16 },
+  title: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: colors.textPrimary,
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: colors.textMuted,
+    textAlign: "center",
+    lineHeight: 20,
+  },
   button: { marginTop: 24 },
 });

@@ -98,7 +98,6 @@ const seedDB = async () => {
   await mongoose.connect(env.MONGO_URI);
   console.log("✅ Conectado ao MongoDB");
 
-  // Limpar coleções
   await Promise.all([
     Category.deleteMany({}),
     Product.deleteMany({}),
@@ -106,11 +105,9 @@ const seedDB = async () => {
   ]);
   console.log("🗑️  Coleções limpas");
 
-  // Inserir categorias
   const createdCategories = await Category.insertMany(categories);
   console.log(`📂 ${createdCategories.length} categorias criadas`);
 
-  // Criar admin padrão
   const admin = await User.create({
     name: "Admin AutoParts",
     email: "admin@autoparts.com",
@@ -119,7 +116,6 @@ const seedDB = async () => {
   });
   console.log(`👤 Admin criado: ${admin.email} / senha: admin123`);
 
-  // Mapear slugs para IDs
   const catMap = Object.fromEntries(
     createdCategories.map((c) => [c.slug, c._id]),
   );

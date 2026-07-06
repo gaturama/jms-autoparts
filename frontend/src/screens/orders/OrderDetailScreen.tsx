@@ -10,6 +10,7 @@ import {
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Order, OrderStatus } from "../../types/order.types";
 import { orderService } from "../../service/orderService";
@@ -33,21 +34,21 @@ const STATUS_STEPS: OrderStatus[] = [
 
 const STATUS_CONFIG: Record<
   OrderStatus,
-  { label: string; icon: string; color: string }
+  { label: string; icon: keyof typeof Ionicons.glyphMap; color: string }
 > = {
   pending: {
     label: "Aguardando pagamento",
-    icon: "⏳",
+    icon: "hourglass-outline",
     color: colors.statusPending,
   },
   confirmed: {
     label: "Pedido confirmado",
-    icon: "✅",
+    icon: "checkmark-circle-outline",
     color: colors.statusConfirmed,
   },
-  shipped: { label: "Em trânsito", icon: "🚚", color: colors.statusShipped },
-  delivered: { label: "Entregue", icon: "📦", color: colors.statusDelivered },
-  cancelled: { label: "Cancelado", icon: "❌", color: colors.statusCancelled },
+  shipped: { label: "Em trânsito", icon: "car-outline", color: colors.statusShipped },
+  delivered: { label: "Entregue", icon: "cube-outline", color: colors.statusDelivered },
+  cancelled: { label: "Cancelado", icon: "close-circle-outline", color: colors.statusCancelled },
 };
 
 export default function OrderDetailScreen() {
@@ -123,7 +124,7 @@ export default function OrderDetailScreen() {
         contentContainerStyle={styles.scroll}
       >
         <View style={[styles.statusHero, { borderColor: status.color }]}>
-          <Text style={styles.statusHeroIcon}>{status.icon}</Text>
+          <Ionicons name={status.icon} size={44} color={status.color} style={styles.statusHeroIcon} />
           <Text style={[styles.statusHeroLabel, { color: status.color }]}>
             {status.label}
           </Text>
@@ -152,7 +153,7 @@ export default function OrderDetailScreen() {
                           },
                         ]}
                       >
-                        {done && <Text style={styles.timelineDotIcon}>✓</Text>}
+                        {done && <Ionicons name="checkmark" size={12} color={colors.white} />}
                       </View>
                       {!isLast && (
                         <View
@@ -209,7 +210,10 @@ export default function OrderDetailScreen() {
         </View>
         
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📍 ENDEREÇO DE ENTREGA</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="location-outline" size={13} color={colors.textMuted} />
+            <Text style={styles.sectionTitle}>ENDEREÇO DE ENTREGA</Text>
+          </View>
           <Text style={styles.addressLine}>{order.shippingAddress.street}</Text>
           <Text style={styles.addressLine}>
             {order.shippingAddress.city} — {order.shippingAddress.state}
@@ -220,7 +224,10 @@ export default function OrderDetailScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>💳 PAGAMENTO</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="card-outline" size={13} color={colors.textMuted} />
+            <Text style={styles.sectionTitle}>PAGAMENTO</Text>
+          </View>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Método</Text>
             <Text style={styles.summaryValue}>
@@ -249,7 +256,8 @@ export default function OrderDetailScreen() {
           style={styles.reorderBtn}
           onPress={() => navigation.navigate("CatalogTab" as never)}
         >
-          <Text style={styles.reorderText}>🔄 Comprar novamente</Text>
+          <Ionicons name="refresh-outline" size={14} color={colors.textSecondary} />
+          <Text style={styles.reorderText}>Comprar novamente</Text>
         </TouchableOpacity>
 
         <View style={{ height: spacing["3x1"] }} />
@@ -270,7 +278,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: spacing.md,
   },
-  statusHeroIcon: { fontSize: 44, marginBottom: spacing.sm },
+  statusHeroIcon: { marginBottom: spacing.sm },
   statusHeroLabel: { fontSize: 18, fontWeight: "800", letterSpacing: 0.5 },
   statusHeroDate: {
     fontSize: 12,
@@ -286,6 +294,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     marginBottom: spacing.md,
   },
+  sectionTitleRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: spacing.md },
   sectionTitle: {
     fontSize: 11,
     fontWeight: "800",
@@ -368,7 +377,10 @@ const styles = StyleSheet.create({
 
   cancelBtn: { marginBottom: spacing.sm },
   reorderBtn: {
+    flexDirection: "row",
+    gap: 6,
     alignItems: "center",
+    justifyContent: "center",
     paddingVertical: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,

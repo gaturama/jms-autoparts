@@ -11,6 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Product } from "../../types/product.types";
 import { productService } from "../../service/productService";
@@ -96,7 +97,7 @@ export default function AdminProductsScreen() {
           <View style={styles.cardInfo}>
             <View style={styles.cardTopRow}>
               <Text style={styles.brand}>{item.brand}</Text>
-              {item.isFeatured && <Badge label="★" variant="accent" />}
+              {item.isFeatured && <Badge label="Destaque" variant="accent" />}
               {item.stock === 0 && <Badge label="Esgotado" variant="error" />}
             </View>
             <Text style={styles.productName} numberOfLines={2}>
@@ -124,14 +125,16 @@ export default function AdminProductsScreen() {
             }
             activeOpacity={0.8}
           >
-            <Text style={styles.editBtnText}>✏️ Editar</Text>
+            <Ionicons name="create-outline" size={14} color={colors.info} />
+            <Text style={styles.editBtnText}>Editar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.deleteBtn}
             onPress={() => handleDelete(item)}
             activeOpacity={0.8}
           >
-            <Text style={styles.deleteBtnText}>🗑 Remover</Text>
+            <Ionicons name="trash-outline" size={14} color={colors.error} />
+            <Text style={styles.deleteBtnText}>Remover</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.viewBtn}
@@ -140,7 +143,8 @@ export default function AdminProductsScreen() {
             }
             activeOpacity={0.8}
           >
-            <Text style={styles.viewBtnText}>👁 Ver</Text>
+            <Ionicons name="eye-outline" size={14} color={colors.textSecondary} />
+            <Text style={styles.viewBtnText}>Ver</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -166,7 +170,8 @@ export default function AdminProductsScreen() {
             style={styles.addBtn}
             onPress={() => navigation.navigate("AdminAddProduct", {})}
           >
-            <Text style={styles.addBtnText}>+ Novo</Text>
+            <Ionicons name="add" size={14} color={colors.white} />
+            <Text style={styles.addBtnText}>Novo</Text>
           </TouchableOpacity>
         }
       />
@@ -186,7 +191,7 @@ export default function AdminProductsScreen() {
         renderItem={renderItem}
         ListEmptyComponent={
           <EmptyState
-            emoji="📦"
+            icon="cube-outline"
             title="Nenhum produto cadastrado"
             actionLabel="Adicionar produto"
             onAction={() => navigation.navigate("AdminAddProduct", {})}
@@ -202,6 +207,9 @@ const styles = StyleSheet.create({
   list: { padding: spacing.base, paddingBottom: spacing["3x1"] },
 
   addBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
     backgroundColor: colors.primary,
     borderRadius: radius.sm,
     paddingHorizontal: spacing.sm,
@@ -256,20 +264,26 @@ const styles = StyleSheet.create({
   },
   editBtn: {
     flex: 1,
+    flexDirection: "row",
+    gap: 4,
     paddingVertical: spacing.sm,
     alignItems: "center",
+    justifyContent: "center",
     borderRightWidth: 1,
     borderRightColor: colors.border,
   },
   editBtnText: { fontSize: 12, fontWeight: "600", color: colors.info },
   deleteBtn: {
     flex: 1,
+    flexDirection: "row",
+    gap: 4,
     paddingVertical: spacing.sm,
     alignItems: "center",
+    justifyContent: "center",
     borderRightWidth: 1,
     borderRightColor: colors.border,
   },
   deleteBtnText: { fontSize: 12, fontWeight: "600", color: colors.error },
-  viewBtn: { flex: 1, paddingVertical: spacing.sm, alignItems: "center" },
+  viewBtn: { flex: 1, flexDirection: "row", gap: 4, paddingVertical: spacing.sm, alignItems: "center", justifyContent: "center" },
   viewBtnText: { fontSize: 12, fontWeight: "600", color: colors.textSecondary },
 });

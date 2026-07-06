@@ -26,7 +26,6 @@ export const createReview = async (req: Request, res: Response, next: NextFuncti
       ...req.body,
     });
 
-    // Recalcula rating médio do produto
     const stats = await Review.aggregate([
       { $match: { product: review.product } },
       { $group: { _id: '$product', avg: { $avg: '$rating' }, count: { $sum: 1 } } },

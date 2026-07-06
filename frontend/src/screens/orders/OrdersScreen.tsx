@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Order, OrderStatus } from "../../types/order.types";
 import { orderService } from "../../service/orderService";
@@ -25,13 +26,13 @@ type Nav = StackNavigationProp<AppStackParamList>;
 
 const STATUS_CONFIG: Record<
   OrderStatus,
-  { label: string; color: string; icon: string }
+  { label: string; color: string; icon: keyof typeof Ionicons.glyphMap }
 > = {
-  pending: { label: "Aguardando", color: colors.statusPending, icon: "⏳" },
-  confirmed: { label: "Confirmado", color: colors.statusConfirmed, icon: "✅" },
-  shipped: { label: "Enviado", color: colors.statusShipped, icon: "🚚" },
-  delivered: { label: "Entregue", color: colors.statusDelivered, icon: "📦" },
-  cancelled: { label: "Cancelado", color: colors.statusCancelled, icon: "❌" },
+  pending: { label: "Aguardando", color: colors.statusPending, icon: "hourglass-outline" },
+  confirmed: { label: "Confirmado", color: colors.statusConfirmed, icon: "checkmark-circle-outline" },
+  shipped: { label: "Enviado", color: colors.statusShipped, icon: "car-outline" },
+  delivered: { label: "Entregue", color: colors.statusDelivered, icon: "cube-outline" },
+  cancelled: { label: "Cancelado", color: colors.statusCancelled, icon: "close-circle-outline" },
 };
 
 export default function OrdersScreen() {
@@ -82,7 +83,7 @@ export default function OrdersScreen() {
               },
             ]}
           >
-            <Text style={styles.statusIcon}>{status.icon}</Text>
+            <Ionicons name={status.icon} size={12} color={status.color} />
             <Text style={[styles.statusLabel, { color: status.color }]}>
               {status.label}
             </Text>
@@ -109,7 +110,7 @@ export default function OrdersScreen() {
             <Text style={styles.totalLabel}>TOTAL DO PEDIDO</Text>
             <Text style={styles.totalValue}>{formatCurrency(item.total)}</Text>
           </View>
-          <Text style={styles.arrowText}>→</Text>
+          <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
         </View>
       </TouchableOpacity>
     );
@@ -142,7 +143,7 @@ export default function OrdersScreen() {
         renderItem={renderOrder}
         ListEmptyComponent={
           <EmptyState
-            emoji="📋"
+            icon="clipboard-outline"
             title="Nenhum pedido ainda"
             subtitle="Seus pedidos aparecerão aqui após a primeira compra"
             actionLabel="Ir ao catálogo"

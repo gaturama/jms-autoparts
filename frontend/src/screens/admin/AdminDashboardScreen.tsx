@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Order } from "../../types/order.types";
 import api from "../../service/api";
@@ -74,25 +75,25 @@ export default function AdminDashboardScreen() {
         {
           label: "Receita total",
           value: formatCurrency(stats.totalRevenue),
-          icon: "💰",
+          icon: "cash-outline" as const,
           color: colors.accent,
         },
         {
           label: "Pedidos",
           value: String(stats.totalOrders),
-          icon: "📦",
+          icon: "cube-outline" as const,
           color: colors.statusConfirmed,
         },
         {
           label: "Clientes",
           value: String(stats.totalUsers),
-          icon: "👥",
+          icon: "people-outline" as const,
           color: colors.statusShipped,
         },
         {
           label: "Produtos ativos",
           value: String(stats.totalProducts),
-          icon: "🏷️",
+          icon: "pricetag-outline" as const,
           color: colors.primary,
         },
       ]
@@ -100,17 +101,17 @@ export default function AdminDashboardScreen() {
 
   const quickActions = [
     {
-      icon: "➕",
+      icon: "add-circle-outline" as const,
       label: "Novo produto",
       onPress: () => navigation.navigate("AdminAddProduct", {}),
     },
     {
-      icon: "📦",
+      icon: "cube-outline" as const,
       label: "Produtos",
       onPress: () => navigation.navigate("AdminProducts"),
     },
     {
-      icon: "📋",
+      icon: "clipboard-outline" as const,
       label: "Pedidos",
       onPress: () => navigation.navigate("AdminOrders"),
     },
@@ -138,20 +139,21 @@ export default function AdminDashboardScreen() {
           />
         }
       >
-        {/* Welcome */}
         <View style={styles.welcome}>
-          <Text style={styles.welcomeTitle}>⚙️ Dashboard</Text>
+          <View style={styles.welcomeTitleRow}>
+            <Ionicons name="settings-outline" size={20} color={colors.textPrimary} />
+            <Text style={styles.welcomeTitle}>Dashboard</Text>
+          </View>
           <Text style={styles.welcomeSub}>Visão geral da sua loja</Text>
         </View>
 
-        {/* Stat cards */}
         <View style={styles.statsGrid}>
           {statCards.map((card, i) => (
             <View
               key={i}
               style={[styles.statCard, { borderLeftColor: card.color }]}
             >
-              <Text style={styles.statIcon}>{card.icon}</Text>
+              <Ionicons name={card.icon} size={22} color={card.color} style={styles.statIcon} />
               <Text style={[styles.statValue, { color: card.color }]}>
                 {card.value}
               </Text>
@@ -160,7 +162,6 @@ export default function AdminDashboardScreen() {
           ))}
         </View>
 
-        {/* Quick actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>AÇÕES RÁPIDAS</Text>
           <View style={styles.actionsRow}>
@@ -171,22 +172,23 @@ export default function AdminDashboardScreen() {
                 onPress={action.onPress}
                 activeOpacity={0.8}
               >
-                <Text style={styles.actionIcon}>{action.icon}</Text>
+                <Ionicons name={action.icon} size={24} color={colors.primary} />
                 <Text style={styles.actionLabel}>{action.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
-        {/* Recent orders */}
         {stats && stats.recentOrders.length > 0 && (
           <View style={styles.section}>
             <View style={styles.sectionHeaderRow}>
               <Text style={styles.sectionTitle}>PEDIDOS RECENTES</Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate("AdminOrders")}
+                style={styles.manageRow}
               >
-                <Text style={styles.seeAll}>Ver todos →</Text>
+                <Text style={styles.seeAll}>Ver todos</Text>
+                <Ionicons name="chevron-forward" size={12} color={colors.primary} />
               </TouchableOpacity>
             </View>
             {stats.recentOrders.map((order) => {
@@ -246,6 +248,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
+  welcomeTitleRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
   welcomeTitle: { fontSize: 20, fontWeight: "900", color: colors.textPrimary },
   welcomeSub: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
 
@@ -293,6 +296,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   seeAll: { fontSize: 12, color: colors.primary, fontWeight: "600" },
+  manageRow: { flexDirection: "row", alignItems: "center", gap: 2 },
 
   actionsRow: { flexDirection: "row", gap: spacing.sm },
   actionCard: {

@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
@@ -66,7 +67,7 @@ export default function CartScreen() {
 
       {items.length === 0 ? (
         <EmptyState
-          emoji="🛒"
+          icon="cart-outline"
           title="Carrinho vazio"
           subtitle="Adicione produtos ao carrinho para continuar comprando"
           actionLabel="Ver catálogo"
@@ -106,8 +107,9 @@ export default function CartScreen() {
 
             {shipping > 0 && (
               <View style={styles.freeShippingHint}>
+                <Ionicons name="bulb-outline" size={14} color={colors.success} />
                 <Text style={styles.freeShippingHintText}>
-                  💡 Frete grátis em pedidos acima de {formatCurrency(500)}
+                  Frete grátis em pedidos acima de {formatCurrency(500)}
                 </Text>
               </View>
             )}
@@ -133,7 +135,8 @@ export default function CartScreen() {
               style={styles.continueBtn}
               onPress={() => navigation.navigate("CatalogTab" as never)}
             >
-              <Text style={styles.continueBtnText}>← Continuar comprando</Text>
+              <Ionicons name="chevron-back" size={13} color={colors.textMuted} />
+              <Text style={styles.continueBtnText}>Continuar comprando</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -194,12 +197,15 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   freeShippingHint: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs,
     backgroundColor: colors.successBg,
     borderRadius: radius.sm,
     padding: spacing.sm,
     marginBottom: spacing.sm,
   },
-  freeShippingHintText: { fontSize: 12, color: colors.success },
+  freeShippingHintText: { fontSize: 12, color: colors.success, flexShrink: 1 },
   totalDivider: {
     height: 1,
     backgroundColor: colors.border,
@@ -213,6 +219,6 @@ const styles = StyleSheet.create({
   },
   totalValue: { fontSize: 22, fontWeight: "900", color: colors.accent },
   checkoutBtn: { marginTop: spacing.md },
-  continueBtn: { alignItems: "center", paddingVertical: spacing.md },
+  continueBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 4, paddingVertical: spacing.md },
   continueBtnText: { fontSize: 13, color: colors.textMuted, fontWeight: "500" },
 });

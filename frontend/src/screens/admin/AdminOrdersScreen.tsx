@@ -13,6 +13,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Order, OrderStatus } from "../../types/order.types";
 import api from "../../service/api";
@@ -29,13 +30,13 @@ type AdminOrder = Order & { user: { name: string; email: string } };
 
 const STATUS_CONFIG: Record<
   OrderStatus,
-  { label: string; color: string; icon: string }
+  { label: string; color: string; icon: keyof typeof Ionicons.glyphMap }
 > = {
-  pending: { label: "Aguardando", color: colors.statusPending, icon: "⏳" },
-  confirmed: { label: "Confirmado", color: colors.statusConfirmed, icon: "✅" },
-  shipped: { label: "Enviado", color: colors.statusShipped, icon: "🚚" },
-  delivered: { label: "Entregue", color: colors.statusDelivered, icon: "📦" },
-  cancelled: { label: "Cancelado", color: colors.statusCancelled, icon: "❌" },
+  pending: { label: "Aguardando", color: colors.statusPending, icon: "hourglass-outline" },
+  confirmed: { label: "Confirmado", color: colors.statusConfirmed, icon: "checkmark-circle-outline" },
+  shipped: { label: "Enviado", color: colors.statusShipped, icon: "car-outline" },
+  delivered: { label: "Entregue", color: colors.statusDelivered, icon: "cube-outline" },
+  cancelled: { label: "Cancelado", color: colors.statusCancelled, icon: "close-circle-outline" },
 };
 
 const STATUS_ORDER: OrderStatus[] = [
@@ -72,7 +73,6 @@ export default function AdminOrdersScreen() {
         const { data } = await api.get("/admin/orders", { params });
         setOrders(data.data);
       } catch {
-        // silent
       } finally {
         setIsLoading(false);
         setIsRefreshing(false);
@@ -94,7 +94,7 @@ export default function AdminOrdersScreen() {
       );
       setSelectedOrder((prev) => (prev ? { ...prev, status } : null));
       Alert.alert(
-        "✓ Atualizado",
+        "Atualizado",
         `Status alterado para "${STATUS_CONFIG[status].label}"`,
       );
     } catch (err) {
@@ -134,7 +134,7 @@ export default function AdminOrdersScreen() {
                 },
               ]}
             >
-              <Text style={styles.statusIcon}>{status.icon}</Text>
+              <Ionicons name={status.icon} size={11} color={status.color} />
               <Text style={[styles.statusLabel, { color: status.color }]}>
                 {status.label}
               </Text>
@@ -147,7 +147,10 @@ export default function AdminOrdersScreen() {
             {" · "}
             {item.paymentMethod.toUpperCase()}
           </Text>
-          <Text style={styles.manageText}>Gerenciar →</Text>
+          <View style={styles.manageRow}>
+            <Text style={styles.manageText}>Gerenciar</Text>
+            <Ionicons name="chevron-forward" size={12} color={colors.primary} />
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -169,7 +172,6 @@ export default function AdminOrdersScreen() {
         onBack={() => navigation.goBack()}
       />
 
-      {/* Status filter */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -212,11 +214,9 @@ export default function AdminOrdersScreen() {
         }
         renderItem={renderOrder}
         ListEmptyComponent={
-          <EmptyState emoji="📋" title="Nenhum pedido encontrado" />
+          <EmptyState icon="clipboard-outline" title="Nenhum pedido encontrado" />
         }
       />
-
-      {/* Order management modal */}
       <Modal
         visible={!!selectedOrder}
         transparent
@@ -264,7 +264,7 @@ export default function AdminOrdersScreen() {
                       disabled={isActive || updatingStatus}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.statusOptionIcon}>{cfg.icon}</Text>
+                      <Ionicons name={cfg.icon} size={18} color={isActive ? cfg.color : colors.textSecondary} />
                       <Text
                         style={[
                           styles.statusOptionLabel,
@@ -274,14 +274,17 @@ export default function AdminOrdersScreen() {
                         {cfg.label}
                       </Text>
                       {isActive && (
-                        <Text
-                          style={[
-                            styles.statusOptionCheck,
-                            { color: cfg.color },
-                          ]}
-                        >
-                          ✓ Atual
-                        </Text>
+                        <View style={styles.statusOptionCheckRow}>
+                          <Ionicons name="checkmark" size={14} color={cfg.color} />
+                          <Text
+                            style={[
+                              styles.statusOptionCheck,
+                              { color: cfg.color },
+                            ]}
+                          >
+                            Atual
+                          </Text>
+                        </View>
                       )}
                     </TouchableOpacity>
                   );
@@ -296,9 +299,12 @@ export default function AdminOrdersScreen() {
                     });
                   }}
                 >
-                  <Text style={styles.viewDetailText}>
-                    Ver detalhes completos →
-                  </Text>
+                  <View style={styles.manageRow}>
+                    <Text style={styles.viewDetailText}>
+                      Ver detalhes completos
+                    </Text>
+                    <Ionicons name="chevron-forward" size={13} color={colors.primary} />
+                  </View>
                 </TouchableOpacity>
               </>
             )}
@@ -390,6 +396,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: radius.md,
   },
   itemsText: { fontSize: 11, color: colors.textMuted },
+  manageRow: { flexDirection: "row", alignItems: "center", gap: 2 },
   manageText: { fontSize: 11, color: colors.primary, fontWeight: "700" },
 
   modalOverlay: {
@@ -451,6 +458,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: colors.textSecondary,
   },
+  statusOptionCheckRow: { flexDirection: "row", alignItems: "center", gap: 2 },
   statusOptionCheck: { fontSize: 12, fontWeight: "700" },
   viewDetailBtn: {
     alignItems: "center",

@@ -11,6 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Product } from "../../types/product.types";
 import { wishlistService } from "../../service/wishlistService";
@@ -37,7 +38,6 @@ export default function WishlistScreen() {
       const data = await wishlistService.get();
       setProducts(data);
     } catch {
-      // silent
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -59,7 +59,7 @@ export default function WishlistScreen() {
 
   const handleAddToCart = (product: Product) => {
     addItem(product);
-    Alert.alert("✓ Adicionado", `${product.name} foi adicionado ao carrinho.`, [
+    Alert.alert("Adicionado", `${product.name} foi adicionado ao carrinho.`, [
       { text: "OK" },
       {
         text: "Ver carrinho",
@@ -114,22 +114,27 @@ export default function WishlistScreen() {
                 onPress={() => handleAddToCart(item)}
                 disabled={item.stock === 0}
               >
-                <Text style={styles.cartBtnText}>
-                  {item.stock === 0 ? "Esgotado" : "🛒 Adicionar"}
-                </Text>
+                {item.stock === 0 ? (
+                  <Text style={styles.cartBtnText}>Esgotado</Text>
+                ) : (
+                  <>
+                    <Ionicons name="cart-outline" size={12} color={colors.white} />
+                    <Text style={styles.cartBtnText}>Adicionar</Text>
+                  </>
+                )}
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.removeBtn}
                 onPress={() => handleRemove(item._id)}
               >
-                <Text style={styles.removeBtnText}>🗑</Text>
+                <Ionicons name="trash-outline" size={14} color={colors.textMuted} />
               </TouchableOpacity>
             </View>
           </View>
         )}
         ListEmptyComponent={
           <EmptyState
-            emoji="🤍"
+            icon="heart-outline"
             title="Lista de desejos vazia"
             subtitle="Salve produtos que você gostou para encontrá-los facilmente depois"
             actionLabel="Explorar produtos"
@@ -154,10 +159,13 @@ const styles = StyleSheet.create({
   },
   cartBtn: {
     flex: 1,
+    flexDirection: "row",
+    gap: 4,
     backgroundColor: colors.primary,
     borderRadius: 6,
     paddingVertical: spacing.xs + 2,
     alignItems: "center",
+    justifyContent: "center",
   },
   cartBtnText: { fontSize: 11, fontWeight: "700", color: colors.white },
   removeBtn: {

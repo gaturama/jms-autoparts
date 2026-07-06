@@ -45,7 +45,6 @@ export const ProductCardHorizontal: React.FC<ProductCardHorizontalProps> = ({
       onPress={onPress}
       activeOpacity={0.85}
     >
-      {/* Image */}
       <View style={styles.imageWrapper}>
         <Image source={imageSource} style={styles.image} resizeMode="cover" />
         {hasDiscount && (

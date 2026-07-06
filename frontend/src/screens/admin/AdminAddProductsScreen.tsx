@@ -13,6 +13,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Category } from "../../types/product.types";
 import { productService, categoryService } from "../../service/productService";
@@ -161,14 +162,13 @@ export default function AdminAddProductScreen() {
         savedProduct = await productService.create(payload);
       }
 
-      // Salva imagem localmente se selecionada
       if (imageUri && savedProduct._id) {
         const base64 = await uriToBase64(imageUri);
         await saveProductImage(savedProduct._id, base64);
       }
 
       Alert.alert(
-        "✓ Sucesso",
+        "Sucesso",
         isEditing
           ? "Produto atualizado com sucesso!"
           : "Produto criado com sucesso!",
@@ -202,7 +202,6 @@ export default function AdminAddProductScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scroll}
       >
-        {/* Image picker */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>IMAGEM DO PRODUTO</Text>
           <TouchableOpacity
@@ -218,7 +217,7 @@ export default function AdminAddProductScreen() {
               />
             ) : (
               <View style={styles.imagePlaceholder}>
-                <Text style={styles.imagePlaceholderIcon}>📷</Text>
+                <Ionicons name="camera-outline" size={36} color={colors.textMuted} />
                 <Text style={styles.imagePlaceholderText}>
                   Toque para escolher imagem
                 </Text>
@@ -233,12 +232,12 @@ export default function AdminAddProductScreen() {
               onPress={() => setImageUri(null)}
               style={styles.removeImageBtn}
             >
-              <Text style={styles.removeImageText}>✕ Remover imagem</Text>
+              <Ionicons name="close-outline" size={14} color={colors.error} />
+              <Text style={styles.removeImageText}>Remover imagem</Text>
             </TouchableOpacity>
           )}
         </View>
 
-        {/* Basic info */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>INFORMAÇÕES BÁSICAS</Text>
           <Input
@@ -274,7 +273,6 @@ export default function AdminAddProductScreen() {
           />
         </View>
 
-        {/* Pricing & stock */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>PREÇO & ESTOQUE</Text>
           <View style={styles.row}>
@@ -307,7 +305,6 @@ export default function AdminAddProductScreen() {
           />
         </View>
 
-        {/* Category */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>CATEGORIA</Text>
           {errors.category && (
@@ -338,7 +335,6 @@ export default function AdminAddProductScreen() {
           </View>
         </View>
 
-        {/* Tags & featured */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>TAGS & DESTAQUE</Text>
           <Input
@@ -360,7 +356,7 @@ export default function AdminAddProductScreen() {
                 form.isFeatured && styles.checkboxActive,
               ]}
             >
-              {form.isFeatured && <Text style={styles.checkmark}>✓</Text>}
+              {form.isFeatured && <Ionicons name="checkmark" size={14} color={colors.white} />}
             </View>
             <View>
               <Text style={styles.featuredLabel}>Produto em destaque</Text>
@@ -436,7 +432,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   imagePlaceholderSub: { fontSize: 11, color: colors.textMuted },
-  removeImageBtn: { alignItems: "center", marginTop: spacing.sm },
+  removeImageBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 4, marginTop: spacing.sm },
   removeImageText: { fontSize: 12, color: colors.error, fontWeight: "600" },
 
   row: { flexDirection: "row", gap: spacing.sm },

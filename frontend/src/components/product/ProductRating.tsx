@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../styles/colors';
 
 interface ProductRatingProps {
@@ -18,9 +19,12 @@ export const ProductRating: React.FC<ProductRatingProps> = ({
   return (
     <View style={styles.row}>
       {stars.map((filled, i) => (
-        <Text key={i} style={[styles.star, { fontSize: size, color: filled ? colors.star : colors.starEmpty }]}>
-          ★
-        </Text>
+        <Ionicons
+          key={i}
+          name={filled ? 'star' : 'star-outline'}
+          size={size}
+          color={filled ? colors.star : colors.starEmpty}
+        />
       ))}
       <Text style={[styles.rating, { fontSize: size - 2 }]}>{rating.toFixed(1)}</Text>
       {reviewCount !== undefined && (

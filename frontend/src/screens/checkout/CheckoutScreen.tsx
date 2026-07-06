@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
@@ -25,14 +26,14 @@ import { spacing, radius } from "../../styles/spacing";
 type Nav = StackNavigationProp<AppStackParamList>;
 
 const PAYMENT_METHODS = [
-  { id: "pix", label: "PIX", icon: "⚡", desc: "5% de desconto" },
+  { id: "pix", label: "PIX", icon: "flash-outline" as const, desc: "5% de desconto" },
   {
     id: "credit",
     label: "Cartão de crédito",
-    icon: "💳",
+    icon: "card-outline" as const,
     desc: "Até 12x sem juros",
   },
-  { id: "boleto", label: "Boleto", icon: "📄", desc: "Vencimento em 3 dias" },
+  { id: "boleto", label: "Boleto", icon: "document-text-outline" as const, desc: "Vencimento em 3 dias" },
 ];
 
 export default function CheckoutScreen() {
@@ -99,9 +100,11 @@ export default function CheckoutScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scroll}
       >
-        {/* Address */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📍 ENDEREÇO DE ENTREGA</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="location-outline" size={14} color={colors.textSecondary} />
+            <Text style={styles.sectionTitle}>ENDEREÇO DE ENTREGA</Text>
+          </View>
           <Input
             label="Endereço completo"
             value={address.street}
@@ -141,9 +144,11 @@ export default function CheckoutScreen() {
           />
         </View>
 
-        {/* Payment */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>💳 FORMA DE PAGAMENTO</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="card-outline" size={14} color={colors.textSecondary} />
+            <Text style={styles.sectionTitle}>FORMA DE PAGAMENTO</Text>
+          </View>
           {PAYMENT_METHODS.map((pm) => (
             <TouchableOpacity
               key={pm.id}
@@ -162,7 +167,7 @@ export default function CheckoutScreen() {
               >
                 {paymentMethod === pm.id && <View style={styles.radioInner} />}
               </View>
-              <Text style={styles.paymentIcon}>{pm.icon}</Text>
+              <Ionicons name={pm.icon} size={20} color={paymentMethod === pm.id ? colors.primary : colors.textSecondary} />
               <View style={styles.paymentInfo}>
                 <Text
                   style={[
@@ -178,9 +183,11 @@ export default function CheckoutScreen() {
           ))}
         </View>
 
-        {/* Order summary */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📋 RESUMO DO PEDIDO</Text>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="clipboard-outline" size={14} color={colors.textSecondary} />
+            <Text style={styles.sectionTitle}>RESUMO DO PEDIDO</Text>
+          </View>
           <View style={styles.summaryCard}>
             {items.map((item) => (
               <View key={item.product._id} style={styles.orderItem}>
@@ -255,6 +262,7 @@ const styles = StyleSheet.create({
     padding: spacing.base,
     marginBottom: spacing.md,
   },
+  sectionTitleRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: spacing.md },
   sectionTitle: {
     fontSize: 12,
     fontWeight: "800",

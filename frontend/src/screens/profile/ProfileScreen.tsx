@@ -10,6 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { useAuth } from "../../context/AuthContext";
 import { authService } from "../../service/authService";
@@ -24,7 +25,7 @@ import { spacing, radius } from "../../styles/spacing";
 type Nav = StackNavigationProp<AppStackParamList>;
 
 interface MenuItem {
-  icon: string;
+  icon: keyof typeof Ionicons.glyphMap;
   label: string;
   sublabel?: string;
   onPress: () => void;
@@ -50,7 +51,7 @@ export default function ProfileScreen() {
       const updated = await authService.updateMe(form);
       updateUser(updated);
       setIsEditing(false);
-      Alert.alert("✓ Salvo", "Perfil atualizado com sucesso.");
+      Alert.alert("Salvo", "Perfil atualizado com sucesso.");
     } catch (err) {
       Alert.alert(
         "Erro",
@@ -70,26 +71,26 @@ export default function ProfileScreen() {
 
   const menuItems: MenuItem[] = [
     {
-      icon: "📋",
+      icon: "clipboard-outline",
       label: "Meus pedidos",
       sublabel: "Acompanhe suas compras",
       onPress: () => navigation.navigate("Orders"),
     },
     {
-      icon: "🤍",
+      icon: "heart-outline",
       label: "Lista de desejos",
       sublabel: "Produtos salvos",
       onPress: () => navigation.navigate("Wishlist"),
     },
     {
-      icon: "🔍",
+      icon: "search-outline",
       label: "Buscar produtos",
       onPress: () => navigation.navigate("Search"),
     },
     ...(user?.role === "admin"
       ? [
           {
-            icon: "⚙️",
+            icon: "settings-outline" as const,
             label: "Painel Admin",
             sublabel: "Gerenciar loja",
             onPress: () => navigation.navigate("AdminDashboard"),
@@ -102,14 +103,12 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>PERFIL</Text>
       </View>
       <View style={styles.headerDivider} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Avatar + Info */}
         <View style={styles.avatarSection}>
           <View style={styles.avatar}>
             <Text style={styles.avatarText}>{user.name[0].toUpperCase()}</Text>
@@ -131,7 +130,6 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {/* Edit form */}
         {isEditing ? (
           <View style={styles.editSection}>
             <Text style={styles.sectionTitle}>EDITAR PERFIL</Text>
@@ -173,12 +171,11 @@ export default function ProfileScreen() {
             onPress={() => setIsEditing(true)}
             activeOpacity={0.8}
           >
-            <Text style={styles.editBtnIcon}>✏️</Text>
+            <Ionicons name="create-outline" size={16} color={colors.textSecondary} />
             <Text style={styles.editBtnText}>Editar perfil</Text>
           </TouchableOpacity>
         )}
 
-        {/* Menu */}
         <View style={styles.menu}>
           <Text style={styles.sectionTitle}>ACESSO RÁPIDO</Text>
           {menuItems.map((item, i) => (
@@ -191,7 +188,9 @@ export default function ProfileScreen() {
               onPress={item.onPress}
               activeOpacity={0.8}
             >
-              <Text style={styles.menuIcon}>{item.icon}</Text>
+              <View style={styles.menuIconWrap}>
+                <Ionicons name={item.icon} size={19} color={item.danger ? colors.error : colors.primary} />
+              </View>
               <View style={styles.menuInfo}>
                 <Text
                   style={[
@@ -205,12 +204,11 @@ export default function ProfileScreen() {
                   <Text style={styles.menuSublabel}>{item.sublabel}</Text>
                 )}
               </View>
-              <Text style={styles.menuArrow}>→</Text>
+              <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
             </TouchableOpacity>
           ))}
         </View>
 
-        {/* Logout */}
         <View style={styles.logoutSection}>
           <Button
             label="Sair da conta"
@@ -327,7 +325,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
   },
   menuItemLast: { borderBottomWidth: 0 },
-  menuIcon: { fontSize: 20, width: 28, textAlign: "center" },
+  menuIconWrap: { width: 28, alignItems: "center" },
   menuInfo: { flex: 1 },
   menuLabel: { fontSize: 14, fontWeight: "600", color: colors.textPrimary },
   menuSublabel: { fontSize: 11, color: colors.textMuted, marginTop: 2 },

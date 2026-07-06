@@ -128,7 +128,12 @@ export default function HomeScreen() {
                   }
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.catIcon}>{staticCat?.icon ?? "🔧"}</Text>
+                  <Ionicons
+                    name="construct-outline"
+                    size={26}
+                    color={colors.primary}
+                    style={styles.catIcon}
+                  />
                   <Text style={styles.catName}>{cat.name}</Text>
                   {cat.productCount > 0 && (
                     <Text style={styles.catCount}>

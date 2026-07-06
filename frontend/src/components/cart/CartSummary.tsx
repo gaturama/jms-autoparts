@@ -27,7 +27,6 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
     <View style={[styles.container, style]}>
       <Text style={styles.title}>RESUMO DO PEDIDO</Text>
 
-      {/* Item count */}
       <View style={styles.row}>
         <Text style={styles.label}>
           {itemCount} {itemCount === 1 ? "item" : "itens"}

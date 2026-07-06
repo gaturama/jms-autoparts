@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Product } from '../../types/product.types';
 import { colors } from '../../styles/colors';
 import { spacing, radius } from '../../styles/spacing';
@@ -45,7 +46,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
         )}
         {product.isFeatured && (
           <View style={styles.featuredBadge}>
-            <Text style={styles.featuredText}>★</Text>
+            <Ionicons name="star" size={11} color={colors.textInverse} />
           </View>
         )}
       </View>
@@ -55,7 +56,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) =>
         <Text style={styles.name} numberOfLines={2}>{product.name}</Text>
 
         <View style={styles.ratingRow}>
-          <Text style={styles.ratingText}>★ {product.rating.toFixed(1)}</Text>
+          <Ionicons name="star" size={11} color={colors.star} />
+          <Text style={styles.ratingText}>{product.rating.toFixed(1)}</Text>
           <Text style={styles.reviewCount}>({product.reviewCount})</Text>
         </View>
 
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
   brand: { fontSize: 9, fontWeight: '700', color: colors.primary, letterSpacing: 1, marginBottom: 2 },
   name: { fontSize: 12, fontWeight: '600', color: colors.textPrimary, lineHeight: 16, marginBottom: spacing.xs },
   ratingRow: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs },
-  ratingText: { fontSize: 11, color: colors.star, fontWeight: '600' },
+  ratingText: { fontSize: 11, color: colors.star, fontWeight: '600', marginLeft: 3 },
   reviewCount: { fontSize: 10, color: colors.textMuted, marginLeft: 3 },
   priceRow: { flexDirection: 'row', alignItems: 'baseline', gap: 4 },
   price: { fontSize: 15, fontWeight: '800', color: colors.accent },

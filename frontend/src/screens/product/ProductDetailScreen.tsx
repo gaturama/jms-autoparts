@@ -8,11 +8,11 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  FlatList,
 } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 import { AppStackParamList } from "../../types/navigation.types";
 import { Product, Review } from "../../types/product.types";
 import { productService } from "../../service/productService";
@@ -73,7 +73,7 @@ export default function ProductDetailScreen() {
     if (!product) return;
     if (product.stock === 0) return;
     addItem(product);
-    Alert.alert("✓ Adicionado", `${product.name} foi adicionado ao carrinho.`, [
+    Alert.alert("Adicionado", `${product.name} foi adicionado ao carrinho.`, [
       { text: "Continuar", style: "cancel" },
       {
         text: "Ver carrinho",
@@ -120,7 +120,7 @@ export default function ProductDetailScreen() {
       );
       setReviews((prev) => [newReview, ...prev]);
       setReviewForm({ rating: 5, comment: "" });
-      Alert.alert("✓ Avaliação enviada", "Obrigado pelo seu feedback!");
+      Alert.alert("Avaliação enviada", "Obrigado pelo seu feedback!");
     } catch (err) {
       Alert.alert(
         "Erro",
@@ -154,7 +154,11 @@ export default function ProductDetailScreen() {
             {wishlistLoading ? (
               <ActivityIndicator size="small" color={colors.primary} />
             ) : (
-              <Text style={styles.wishIcon}>{inWishlist ? "❤️" : "🤍"}</Text>
+              <Ionicons
+                name={inWishlist ? "heart" : "heart-outline"}
+                size={22}
+                color={inWishlist ? colors.primary : colors.textSecondary}
+              />
             )}
           </TouchableOpacity>
         }
@@ -179,7 +183,7 @@ export default function ProductDetailScreen() {
             <Text style={styles.brand}>{product.brand.toUpperCase()}</Text>
             {category && <Badge label={category.name} variant="default" />}
             {product.isFeatured && (
-              <Badge label="★ DESTAQUE" variant="accent" />
+              <Badge label="DESTAQUE" variant="accent" />
             )}
           </View>
 
@@ -295,14 +299,11 @@ export default function ProductDetailScreen() {
                           setReviewForm((f) => ({ ...f, rating: s }))
                         }
                       >
-                        <Text
-                          style={[
-                            styles.starBtn,
-                            s <= reviewForm.rating && styles.starBtnActive,
-                          ]}
-                        >
-                          ★
-                        </Text>
+                        <Ionicons
+                          name={s <= reviewForm.rating ? "star" : "star-outline"}
+                          size={26}
+                          color={s <= reviewForm.rating ? colors.star : colors.starEmpty}
+                        />
                       </TouchableOpacity>
                     ))}
                     <Text style={styles.starLabel}>{reviewForm.rating}/5</Text>
@@ -358,8 +359,9 @@ export default function ProductDetailScreen() {
                         </Text>
                       </View>
                       <View style={styles.reviewRating}>
+                        <Ionicons name="star" size={12} color={colors.star} />
                         <Text style={styles.reviewRatingText}>
-                          ★ {r.rating}
+                          {r.rating}
                         </Text>
                       </View>
                     </View>
@@ -545,8 +547,6 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
     marginBottom: spacing.md,
   },
-  starBtn: { fontSize: 26, color: colors.starEmpty },
-  starBtnActive: { color: colors.star },
   starLabel: { fontSize: 12, color: colors.textMuted, marginLeft: spacing.xs },
   commentInput: {
     backgroundColor: colors.cardAlt,
@@ -593,6 +593,9 @@ const styles = StyleSheet.create({
   reviewUser: { fontSize: 13, fontWeight: "700", color: colors.textPrimary },
   reviewDate: { fontSize: 10, color: colors.textMuted },
   reviewRating: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
     backgroundColor: colors.cardAlt,
     borderRadius: radius.sm,
     paddingHorizontal: spacing.sm,

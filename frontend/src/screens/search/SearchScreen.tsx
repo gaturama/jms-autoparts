@@ -6,6 +6,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { AppStackParamList } from '../../types/navigation.types';
 import { Product } from '../../types/product.types';
 import { productService } from '../../service/productService';
@@ -43,10 +44,9 @@ export default function SearchScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      {/* Search bar */}
       <View style={styles.searchBar}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backIcon}>←</Text>
+          <Ionicons name="chevron-back" size={22} color={colors.textPrimary} />
         </TouchableOpacity>
         <TextInput
           style={styles.input}
@@ -60,14 +60,13 @@ export default function SearchScreen() {
         {isLoading && <ActivityIndicator size="small" color={colors.primary} style={styles.loader} />}
         {!!query && !isLoading && (
           <TouchableOpacity onPress={() => setQuery('')} style={styles.clearBtn}>
-            <Text style={styles.clearText}>✕</Text>
+            <Ionicons name="close" size={16} color={colors.textMuted} />
           </TouchableOpacity>
         )}
       </View>
       <View style={styles.divider} />
 
       {!hasSearched ? (
-        /* Quick category shortcuts */
         <View style={styles.suggestions}>
           <Text style={styles.suggestionsTitle}>NAVEGUE POR CATEGORIA</Text>
           <View style={styles.catGrid}>
@@ -78,7 +77,7 @@ export default function SearchScreen() {
                 onPress={() => navigation.navigate('Category', { slug: cat.slug, name: cat.name })}
                 activeOpacity={0.8}
               >
-                <Text style={styles.catPillIcon}>{cat.icon}</Text>
+                <Ionicons name="construct-outline" size={14} color={colors.textSecondary} />
                 <Text style={styles.catPillText}>{cat.name}</Text>
               </TouchableOpacity>
             ))}
@@ -86,7 +85,7 @@ export default function SearchScreen() {
         </View>
       ) : results.length === 0 && !isLoading ? (
         <EmptyState
-          emoji="🔍"
+          icon="search-outline"
           title={`Sem resultados para "${query}"`}
           subtitle="Tente buscar por marca, categoria ou nome do produto"
         />
