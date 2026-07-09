@@ -64,7 +64,7 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       {total > 0 && total < 500 && showShipping && (
         <View style={styles.hint}>
           <Text style={styles.hintText}>
-            💡 Faltam {formatCurrency(500 - total)} para frete grátis
+             Faltam {formatCurrency(500 - total)} para frete grátis
           </Text>
         </View>
       )}

@@ -6,6 +6,7 @@ import { spacing, radius } from '../../styles/spacing';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { resolveProductImage } from '../../utils/imageHelpers';
 import { useCart } from '../../context/CartContext';
+import { Ionicons } from '@expo/vector-icons';
 
 interface CartItemProps {
   item: CartItemType;
@@ -36,7 +37,11 @@ export const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
           onPress={() => removeItem(item.product._id)}
           style={styles.deleteBtn}
         >
-          <Text style={styles.deleteText}>🗑</Text>
+          <Ionicons
+            name='trash'
+            size={20}
+            color="#f5f5f5"
+          />
         </TouchableOpacity>
 
         <View style={styles.qtyRow}>
