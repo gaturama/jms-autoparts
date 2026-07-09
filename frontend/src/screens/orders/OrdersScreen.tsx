@@ -28,11 +28,31 @@ const STATUS_CONFIG: Record<
   OrderStatus,
   { label: string; color: string; icon: keyof typeof Ionicons.glyphMap }
 > = {
-  pending: { label: "Aguardando", color: colors.statusPending, icon: "hourglass-outline" },
-  confirmed: { label: "Confirmado", color: colors.statusConfirmed, icon: "checkmark-circle-outline" },
-  shipped: { label: "Enviado", color: colors.statusShipped, icon: "car-outline" },
-  delivered: { label: "Entregue", color: colors.statusDelivered, icon: "cube-outline" },
-  cancelled: { label: "Cancelado", color: colors.statusCancelled, icon: "close-circle-outline" },
+  pending: {
+    label: "Aguardando",
+    color: colors.statusPending,
+    icon: "hourglass-outline",
+  },
+  confirmed: {
+    label: "Confirmado",
+    color: colors.statusConfirmed,
+    icon: "checkmark-circle-outline",
+  },
+  shipped: {
+    label: "Enviado",
+    color: colors.statusShipped,
+    icon: "car-outline",
+  },
+  delivered: {
+    label: "Entregue",
+    color: colors.statusDelivered,
+    icon: "cube-outline",
+  },
+  cancelled: {
+    label: "Cancelado",
+    color: colors.statusCancelled,
+    icon: "close-circle-outline",
+  },
 };
 
 export default function OrdersScreen() {
@@ -147,7 +167,12 @@ export default function OrdersScreen() {
             title="Nenhum pedido ainda"
             subtitle="Seus pedidos aparecerão aqui após a primeira compra"
             actionLabel="Ir ao catálogo"
-            onAction={() => navigation.navigate("CatalogTab" as never)}
+            onAction={() =>
+              navigation.navigate("MainTabs", {
+                screen: "CatalogTab",
+                params: undefined,
+              })
+            }
           />
         }
       />

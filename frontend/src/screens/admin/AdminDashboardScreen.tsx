@@ -57,6 +57,7 @@ export default function AdminDashboardScreen() {
     try {
       refresh ? setIsRefreshing(true) : setIsLoading(true);
       const { data } = await api.get("/admin/stats");
+      console.log(JSON.stringify(data.data, null, 2));
       setStats(data.data);
     } catch {
       // silent
@@ -141,7 +142,11 @@ export default function AdminDashboardScreen() {
       >
         <View style={styles.welcome}>
           <View style={styles.welcomeTitleRow}>
-            <Ionicons name="settings-outline" size={20} color={colors.textPrimary} />
+            <Ionicons
+              name="settings-outline"
+              size={20}
+              color={colors.textPrimary}
+            />
             <Text style={styles.welcomeTitle}>Dashboard</Text>
           </View>
           <Text style={styles.welcomeSub}>Visão geral da sua loja</Text>
@@ -153,7 +158,12 @@ export default function AdminDashboardScreen() {
               key={i}
               style={[styles.statCard, { borderLeftColor: card.color }]}
             >
-              <Ionicons name={card.icon} size={22} color={card.color} style={styles.statIcon} />
+              <Ionicons
+                name={card.icon}
+                size={22}
+                color={card.color}
+                style={styles.statIcon}
+              />
               <Text style={[styles.statValue, { color: card.color }]}>
                 {card.value}
               </Text>
@@ -188,7 +198,11 @@ export default function AdminDashboardScreen() {
                 style={styles.manageRow}
               >
                 <Text style={styles.seeAll}>Ver todos</Text>
-                <Ionicons name="chevron-forward" size={12} color={colors.primary} />
+                <Ionicons
+                  name="chevron-forward"
+                  size={12}
+                  color={colors.primary}
+                />
               </TouchableOpacity>
             </View>
             {stats.recentOrders.map((order) => {
@@ -207,7 +221,9 @@ export default function AdminDashboardScreen() {
                     <Text style={styles.orderId}>
                       #{order._id.slice(-8).toUpperCase()}
                     </Text>
-                    <Text style={styles.orderUser}>{order.user.name}</Text>
+                    <Text style={styles.orderUser}>
+                      {order.user?.name ?? "Usuário não encontrado"}
+                    </Text>
                     <Text style={styles.orderDate}>
                       {formatDate(order.createdAt)}
                     </Text>
@@ -248,7 +264,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-  welcomeTitleRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
+  welcomeTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.xs,
+  },
   welcomeTitle: { fontSize: 20, fontWeight: "900", color: colors.textPrimary },
   welcomeSub: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
 

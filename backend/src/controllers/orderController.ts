@@ -8,7 +8,6 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
   try {
     const { items, paymentMethod, shippingAddress, notes } = req.body;
 
-    // Busca os produtos e monta os itens com snapshot de preço/nome
     const orderItems = await Promise.all(
       items.map(async (item: { product: string; quantity: number }) => {
         const product = await Product.findById(item.product);
@@ -24,7 +23,11 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
       })
     );
 
+    console.log("Usuário logado:", req.user);
+
     const total = orderItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+    console.log("Salvando pedido para:", req.user!.userId);
 
     const order = await Order.create({
       user: req.user!.userId,
@@ -35,7 +38,6 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
       notes,
     });
 
-    // Desconta estoque
     await Promise.all(
       items.map((item: { product: string; quantity: number }) =>
         Product.findByIdAndUpdate(item.product, { $inc: { stock: -item.quantity } })

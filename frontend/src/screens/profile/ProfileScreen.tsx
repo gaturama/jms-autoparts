@@ -34,13 +34,18 @@ interface MenuItem {
 
 export default function ProfileScreen() {
   const navigation = useNavigation<Nav>();
+  console.log("1");
   const { user, logout, updateUser } = useAuth();
+  console.log("2", user);
+
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [form, setForm] = useState({
     name: user?.name ?? "",
     phone: user?.phone ?? "",
   });
+
+
 
   const set = (key: string) => (v: string) =>
     setForm((f) => ({ ...f, [key]: v }));
@@ -99,8 +104,11 @@ export default function ProfileScreen() {
       : []),
   ];
 
+  console.log("3");
+
   if (!user) return null;
 
+  console.log("4");
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
       <View style={styles.header}>
