@@ -11,6 +11,7 @@ import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { colors } from '../../styles/colors';
 import { spacing } from '../../styles/spacing';
+import { fonts } from '../../styles/typography';
 
 type Props = { navigation: StackNavigationProp<AuthStackParamList, 'Login'> };
 
@@ -87,6 +88,7 @@ export default function LoginScreen({ navigation }: Props) {
               fullWidth
               size="lg"
               style={styles.loginBtn}
+              textStyle={styles.loginBtnText}
             />
 
             <View style={styles.dividerRow}>
@@ -122,28 +124,40 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   scroll: { flexGrow: 1, paddingHorizontal: spacing.xl, paddingBottom: spacing['2xl'] },
 
-  header: { alignItems: 'center', paddingTop: spacing['3x1'], paddingBottom: spacing['2xl'] },
-  logo: { fontSize: 42, fontWeight: '900', color: colors.textPrimary, letterSpacing: 6 },
-  logoAccent: { color: colors.primary },
-  logoLine: { width: 60, height: 3, backgroundColor: colors.primary, marginVertical: spacing.md },
-  tagline: { fontSize: 11, fontWeight: '600', color: colors.textMuted, letterSpacing: 3 },
+  header: { alignItems: 'center', paddingTop: spacing['2xl'], paddingBottom: spacing.xl },
+  // Logo reduzido: era fontSize 42 / letterSpacing 6 — proporção grande demais para o header.
+  logo: { fontFamily: fonts.displayBold, fontSize: 26, color: colors.textPrimary, letterSpacing: 1.5 },
+  logoAccent: { color: colors.accent },
+  logoLine: { width: 36, height: 2, backgroundColor: colors.primary, marginVertical: spacing.sm },
+  tagline: { fontSize: 11, fontWeight: '600', color: colors.textMuted, letterSpacing: 2 },
 
   form: {
     backgroundColor: colors.surface,
-    borderRadius: 12,
+    borderRadius: 4,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopWidth: 2,
+    borderTopColor: colors.primary,
     padding: spacing.xl,
   },
   formTitle: {
+    fontFamily: fonts.displaySemibold,
     fontSize: 13,
-    fontWeight: '800',
     color: colors.textSecondary,
-    letterSpacing: 2,
+    letterSpacing: 1.5,
     marginBottom: spacing.xl,
     textAlign: 'center',
   },
-  loginBtn: { marginTop: spacing.sm },
+  loginBtn: {
+    marginTop: spacing.sm,
+    backgroundColor: colors.primary,
+    borderRadius: 4,
+  },
+  loginBtnText: {
+    fontFamily: fonts.displayBold,
+    color: colors.textInverse,
+    letterSpacing: 1,
+  },
   dividerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -155,11 +169,11 @@ const styles = StyleSheet.create({
   registerBtn: {
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 8,
+    borderRadius: 4,
     paddingVertical: spacing.md,
     alignItems: 'center',
   },
-  registerText: { fontSize: 13, fontWeight: '700', color: colors.textSecondary, letterSpacing: 1 },
+  registerText: { fontFamily: fonts.displayBold, fontSize: 13, color: colors.textSecondary, letterSpacing: 1 },
 
   footer: { fontSize: 11, color: colors.textMuted, textAlign: 'center', marginTop: spacing.xl, lineHeight: 18 },
   footerLink: { color: colors.primary },

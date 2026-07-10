@@ -16,6 +16,7 @@ import { EmptyState } from '../../components/common/EmptyState';
 import { CategoryChip } from '../../components/category/CategoryChip';
 import { colors } from '../../styles/colors';
 import { spacing, radius } from '../../styles/spacing';
+import { fonts } from '../../styles/typography';
 import { STATIC_CATEGORIES } from '../../data/categories';
 
 type Nav = StackNavigationProp<AppStackParamList>;
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: spacing.base, paddingVertical: spacing.md,
   },
-  title: { fontSize: 18, fontWeight: '900', color: colors.textPrimary, letterSpacing: 3 },
+  title: { fontFamily: fonts.displayBold, fontSize: 18, color: colors.textPrimary, letterSpacing: 3 },
   headerActions: { flexDirection: 'row', gap: spacing.sm },
   actionBtn: {
     flexDirection: 'row', alignItems: 'center', gap: spacing.xs,
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.full, alignSelf: 'center', marginBottom: spacing.xl,
   },
   modalTitle: {
-    fontSize: 12, fontWeight: '800', color: colors.textMuted,
+    fontFamily: fonts.displaySemibold, fontSize: 12, color: colors.textMuted,
     letterSpacing: 2, marginBottom: spacing.lg,
   },
   sortOption: {

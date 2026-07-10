@@ -23,37 +23,39 @@ export const fontWeights = {
   black: '900' as TextStyle['fontWeight'],
 };
 
+export const fonts = {
+  displayBold: 'Rajdhani-Bold',
+  displaySemibold: 'Rajdhani-SemiBold',
+  mono: 'JetBrainsMono-Medium',
+};
+
 export const typography = {
   displayLg: {
+    fontFamily: fonts.displayBold,
     fontSize: fontSizes['4xl'],
-    fontWeight: fontWeights.black,
     color: colors.textPrimary,
-    letterSpacing: -0.5,
+    letterSpacing: 0.5,
   } as TextStyle,
-
   displayMd: {
+    fontFamily: fonts.displayBold,
     fontSize: fontSizes['3xl'],
-    fontWeight: fontWeights.extrabold,
     color: colors.textPrimary,
-    letterSpacing: -0.3,
+    letterSpacing: 0.5,
   } as TextStyle,
-
   h1: {
+    fontFamily: fonts.displayBold,
     fontSize: fontSizes['2xl'],
-    fontWeight: fontWeights.bold,
     color: colors.textPrimary,
-    letterSpacing: 0.2,
+    letterSpacing: 0.5,
   } as TextStyle,
-
   h2: {
+    fontFamily: fonts.displayBold,
     fontSize: fontSizes.xl,
-    fontWeight: fontWeights.bold,
     color: colors.textPrimary,
   } as TextStyle,
-
   h3: {
+    fontFamily: fonts.displaySemibold,
     fontSize: fontSizes.lg,
-    fontWeight: fontWeights.semibold,
     color: colors.textPrimary,
   } as TextStyle,
 
@@ -63,14 +65,12 @@ export const typography = {
     color: colors.textSecondary,
     lineHeight: 24,
   } as TextStyle,
-
   body: {
     fontSize: fontSizes.md,
     fontWeight: fontWeights.regular,
     color: colors.textSecondary,
     lineHeight: 22,
   } as TextStyle,
-
   bodySm: {
     fontSize: fontSizes.sm,
     fontWeight: fontWeights.regular,
@@ -79,42 +79,38 @@ export const typography = {
   } as TextStyle,
 
   labelLg: {
+    fontFamily: fonts.displaySemibold,
     fontSize: fontSizes.md,
-    fontWeight: fontWeights.semibold,
     color: colors.textSecondary,
-    letterSpacing: 0.8,
+    letterSpacing: 1,
     textTransform: 'uppercase' as const,
   } as TextStyle,
-
   label: {
+    fontFamily: fonts.displaySemibold,
     fontSize: fontSizes.sm,
-    fontWeight: fontWeights.semibold,
     color: colors.textMuted,
-    letterSpacing: 0.6,
+    letterSpacing: 1,
     textTransform: 'uppercase' as const,
   } as TextStyle,
 
   priceLg: {
+    fontFamily: fonts.mono,
     fontSize: fontSizes['2xl'],
-    fontWeight: fontWeights.extrabold,
     color: colors.accent,
   } as TextStyle,
-
   price: {
+    fontFamily: fonts.mono,
     fontSize: fontSizes.lg,
-    fontWeight: fontWeights.bold,
     color: colors.accent,
   } as TextStyle,
-
   priceSm: {
+    fontFamily: fonts.mono,
     fontSize: fontSizes.md,
-    fontWeight: fontWeights.bold,
     color: colors.accent,
   } as TextStyle,
-
   priceOriginal: {
+    fontFamily: fonts.mono,
     fontSize: fontSizes.sm,
-    fontWeight: fontWeights.regular,
     color: colors.textMuted,
     textDecorationLine: 'line-through' as const,
   } as TextStyle,
@@ -126,15 +122,14 @@ export const typography = {
   } as TextStyle,
 
   buttonLg: {
+    fontFamily: fonts.displayBold,
     fontSize: fontSizes.base,
-    fontWeight: fontWeights.bold,
-    letterSpacing: 0.5,
+    letterSpacing: 1,
     textTransform: 'uppercase' as const,
   } as TextStyle,
-
   button: {
+    fontFamily: fonts.displayBold,
     fontSize: fontSizes.md,
-    fontWeight: fontWeights.bold,
-    letterSpacing: 0.4,
+    letterSpacing: 0.8,
   } as TextStyle,
 };

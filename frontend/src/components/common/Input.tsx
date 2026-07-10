@@ -8,9 +8,9 @@ import {
   TextInputProps,
   ViewStyle,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../styles/colors';
 import { spacing, radius } from '../../styles/spacing';
-
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
@@ -20,7 +20,6 @@ interface InputProps extends TextInputProps {
   isPassword?: boolean;
   containerStyle?: ViewStyle;
 }
-
 export const Input: React.FC<InputProps> = ({
   label,
   error,
@@ -33,7 +32,6 @@ export const Input: React.FC<InputProps> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [focused, setFocused] = useState(false);
-
   return (
     <View style={[styles.container, containerStyle]}>
       {!!label && <Text style={styles.label}>{label}</Text>}
@@ -57,8 +55,13 @@ export const Input: React.FC<InputProps> = ({
           <TouchableOpacity
             onPress={() => setShowPassword((v) => !v)}
             style={styles.iconRight}
+            hitSlop={8}
           >
-            <Text style={styles.iconText}>{showPassword ? '🙈' : '👁️'}</Text>
+            <Ionicons
+              name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+              size={18}
+              color={colors.textMuted}
+            />
           </TouchableOpacity>
         ) : (
           !!rightIcon && <View style={styles.iconRight}>{rightIcon}</View>
@@ -69,7 +72,6 @@ export const Input: React.FC<InputProps> = ({
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: { marginBottom: spacing.md },
   label: {
@@ -101,7 +103,6 @@ const styles = StyleSheet.create({
   inputWithLeft: { paddingLeft: spacing.xs },
   iconLeft: { paddingLeft: spacing.md },
   iconRight: { paddingRight: spacing.md },
-  iconText: { fontSize: 16 },
   errorText: { fontSize: 12, color: colors.error, marginTop: spacing.xs },
   hintText: { fontSize: 12, color: colors.textMuted, marginTop: spacing.xs },
 });

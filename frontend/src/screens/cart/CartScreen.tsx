@@ -20,6 +20,7 @@ import { EmptyState } from "../../components/common/EmptyState";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { colors } from "../../styles/colors";
 import { spacing, radius } from "../../styles/spacing";
+import { fonts } from "../../styles/typography";
 
 type Nav = StackNavigationProp<AppStackParamList>;
 
@@ -129,6 +130,7 @@ export default function CartScreen() {
               fullWidth
               size="lg"
               style={styles.checkoutBtn}
+              textStyle={styles.checkoutBtnText}
             />
 
             <TouchableOpacity
@@ -157,8 +159,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   title: {
+    fontFamily: fonts.displayBold,
     fontSize: 18,
-    fontWeight: "900",
     color: colors.textPrimary,
     letterSpacing: 3,
   },
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   summaryLabel: { fontSize: 14, color: colors.textSecondary },
-  summaryValue: { fontSize: 14, color: colors.textPrimary, fontWeight: "600" },
+  summaryValue: { fontFamily: fonts.mono, fontSize: 14, color: colors.textPrimary },
   freeShipping: {
     fontSize: 13,
     color: colors.success,
@@ -212,13 +214,14 @@ const styles = StyleSheet.create({
     marginVertical: spacing.sm,
   },
   totalLabel: {
+    fontFamily: fonts.displayBold,
     fontSize: 16,
-    fontWeight: "900",
     color: colors.textPrimary,
     letterSpacing: 1,
   },
-  totalValue: { fontSize: 22, fontWeight: "900", color: colors.accent },
+  totalValue: { fontFamily: fonts.mono, fontSize: 22, color: colors.accent },
   checkoutBtn: { marginTop: spacing.md },
+  checkoutBtnText: { fontFamily: fonts.displayBold, color: colors.textInverse },
   continueBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 4, paddingVertical: spacing.md },
   continueBtnText: { fontSize: 13, color: colors.textMuted, fontWeight: "500" },
 });

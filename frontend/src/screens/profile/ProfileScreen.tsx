@@ -21,6 +21,7 @@ import { formatDate } from "../../utils/formatDate";
 import { formatPhone } from "../../utils/validators";
 import { colors } from "../../styles/colors";
 import { spacing, radius } from "../../styles/spacing";
+import { fonts } from "../../styles/typography";
 
 type Nav = StackNavigationProp<AppStackParamList>;
 
@@ -44,8 +45,6 @@ export default function ProfileScreen() {
     name: user?.name ?? "",
     phone: user?.phone ?? "",
   });
-
-
 
   const set = (key: string) => (v: string) =>
     setForm((f) => ({ ...f, [key]: v }));
@@ -170,6 +169,7 @@ export default function ProfileScreen() {
                 onPress={handleSave}
                 isLoading={isSaving}
                 style={styles.editActionBtn}
+                textStyle={{ color: colors.textInverse }}
               />
             </View>
           </View>
@@ -244,8 +244,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
   },
   headerTitle: {
+    fontFamily: fonts.displayBold,
     fontSize: 18,
-    fontWeight: "900",
     color: colors.textPrimary,
     letterSpacing: 3,
   },
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.primaryDark,
   },
-  avatarText: { fontSize: 26, fontWeight: "900", color: colors.white },
+  avatarText: { fontFamily: fonts.displayBold, fontSize: 26, color: colors.textInverse },
   userInfo: { flex: 1, justifyContent: "center" },
   nameRow: {
     flexDirection: "row",
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
     marginBottom: 3,
   },
-  userName: { fontSize: 17, fontWeight: "800", color: colors.textPrimary },
+  userName: { fontFamily: fonts.displayBold, fontSize: 17, color: colors.textPrimary },
   userEmail: { fontSize: 12, color: colors.textMuted },
   userPhone: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
   memberSince: { fontSize: 11, color: colors.textMuted, marginTop: 4 },
@@ -306,8 +306,8 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   sectionTitle: {
+    fontFamily: fonts.displaySemibold,
     fontSize: 11,
-    fontWeight: "800",
     color: colors.textMuted,
     letterSpacing: 2,
     marginBottom: spacing.md,

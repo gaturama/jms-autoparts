@@ -11,6 +11,7 @@ import { Input } from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { colors } from '../../styles/colors';
 import { spacing } from '../../styles/spacing';
+import { fonts } from '../../styles/typography';
 
 type Props = { navigation: StackNavigationProp<AuthStackParamList, 'Register'> };
 
@@ -72,7 +73,8 @@ export default function RegisterScreen({ navigation }: Props) {
               isPassword placeholder="Repita a senha" error={errors.confirm} />
 
             <Button label="Criar conta" onPress={handleRegister}
-              isLoading={isLoading} fullWidth size="lg" style={styles.btn} />
+              isLoading={isLoading} fullWidth size="lg"
+              style={styles.btn} textStyle={styles.btnText} />
           </View>
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.loginLink}>
@@ -93,11 +95,35 @@ const styles = StyleSheet.create({
   header: { paddingTop: spacing.lg, paddingBottom: spacing.xl },
   backBtn: { marginBottom: spacing.lg },
   backText: { fontSize: 12, fontWeight: '700', color: colors.textMuted, letterSpacing: 1 },
-  logo: { fontSize: 32, fontWeight: '900', color: colors.textPrimary, letterSpacing: 4 },
-  logoAccent: { color: colors.primary },
-  form: { backgroundColor: colors.surface, borderRadius: 12, borderWidth: 1, borderColor: colors.border, padding: spacing.xl },
-  formTitle: { fontSize: 13, fontWeight: '800', color: colors.textSecondary, letterSpacing: 2, marginBottom: spacing.xl, textAlign: 'center' },
-  btn: { marginTop: spacing.sm },
+  logo: { fontFamily: fonts.displayBold, fontSize: 22, color: colors.textPrimary, letterSpacing: 1 },
+  logoAccent: { color: colors.accent },
+  form: {
+    backgroundColor: colors.surface,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderTopWidth: 2,
+    borderTopColor: colors.primary,
+    padding: spacing.xl,
+  },
+  formTitle: {
+    fontFamily: fonts.displaySemibold,
+    fontSize: 13,
+    color: colors.textSecondary,
+    letterSpacing: 1.5,
+    marginBottom: spacing.xl,
+    textAlign: 'center',
+  },
+  btn: {
+    marginTop: spacing.sm,
+    backgroundColor: colors.primary,
+    borderRadius: 4,
+  },
+  btnText: {
+    fontFamily: fonts.displayBold,
+    color: colors.textInverse,
+    letterSpacing: 1,
+  },
   loginLink: { marginTop: spacing.xl, alignItems: 'center' },
   loginLinkText: { fontSize: 13, color: colors.textMuted },
   loginLinkAccent: { color: colors.primary, fontWeight: '700' },

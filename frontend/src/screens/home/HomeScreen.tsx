@@ -21,6 +21,7 @@ import { ProductCard } from "../../components/product/ProdutoCard";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { colors } from "../../styles/colors";
 import { spacing, radius } from "../../styles/spacing";
+import { fonts } from "../../styles/typography";
 import { STATIC_CATEGORIES } from "../../data/categories";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -69,7 +70,7 @@ export default function HomeScreen() {
             onPress={() => navigation.navigate("Search")}
             style={styles.searchBtn}
           >
-            <Ionicons name="search" size={18} color="#E94560" />
+            <Ionicons name="search" size={18} color={colors.primary} />
           </TouchableOpacity>
         </View>
 
@@ -232,8 +233,8 @@ const styles = StyleSheet.create({
   },
   greeting: { fontSize: 12, color: colors.textMuted, fontWeight: "500" },
   logo: {
+    fontFamily: fonts.displayBold,
     fontSize: 24,
-    fontWeight: "900",
     color: colors.textPrimary,
     letterSpacing: 3,
   },
@@ -260,15 +261,15 @@ const styles = StyleSheet.create({
   },
   heroContent: { flex: 1 },
   heroLabel: {
+    fontFamily: fonts.displaySemibold,
     fontSize: 10,
-    fontWeight: "800",
     color: colors.primary,
     letterSpacing: 2,
     marginBottom: spacing.xs,
   },
   heroTitle: {
+    fontFamily: fonts.displayBold,
     fontSize: 26,
-    fontWeight: "900",
     color: colors.textPrimary,
     lineHeight: 30,
     marginBottom: spacing.lg,
@@ -281,9 +282,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   heroBtnText: {
+    fontFamily: fonts.displayBold,
     fontSize: 11,
-    fontWeight: "800",
-    color: colors.white,
+    color: colors.textInverse,
     letterSpacing: 1,
   },
   heroEmoji: { fontSize: 64, marginLeft: spacing.md },
@@ -296,8 +297,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   sectionTitle: {
+    fontFamily: fonts.displaySemibold,
     fontSize: 13,
-    fontWeight: "800",
     color: colors.textPrimary,
     letterSpacing: 2,
   },
@@ -344,8 +345,8 @@ const styles = StyleSheet.create({
   },
   adminIcon: { fontSize: 24 },
   adminTitle: {
+    fontFamily: fonts.displaySemibold,
     fontSize: 13,
-    fontWeight: "800",
     color: colors.primary,
     letterSpacing: 1,
   },

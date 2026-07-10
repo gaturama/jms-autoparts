@@ -1,37 +1,34 @@
 import { ViewStyle } from "react-native";
+import { colors } from "./colors";
 
 export const shadows = {
     none: {} as ViewStyle,
-
     sm: {
-        elevation: 2,
+        elevation: 1,
         shadowColor: '#000',
-        shadowOffSet: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.15,
         shadowRadius: 2,
     } as ViewStyle,
-
     md: {
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+    } as ViewStyle,
+    lg: {
         elevation: 4,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.4,
-        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
     } as ViewStyle,
-
-    lg: {
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.5,
-        shadowRadius: 8,
-    } as ViewStyle,
-
     accent: {
-        elevation: 6,
-        shadowColor: '#E94560',
+        elevation: 3,
+        shadowColor: colors.primary,
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.4,
-        shadowRadius: 6,
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
     } as ViewStyle,
 } as const;
