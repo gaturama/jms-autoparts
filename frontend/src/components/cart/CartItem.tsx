@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { CartItem as CartItemType } from '../../types/cart.types';
-import { colors } from '../../styles/colors';
-import { spacing, radius } from '../../styles/spacing';
-import { formatCurrency } from '../../utils/formatCurrency';
-import { resolveProductImage } from '../../utils/imageHelpers';
-import { useCart } from '../../context/CartContext';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, Image, StyleSheet, type ImageSourcePropType } from "react-native";
+import { CartItem as CartItemType } from "../../types/cart.types";
+import { colors } from "../../styles/colors";
+import { spacing, radius } from "../../styles/spacing";
+import { formatCurrency } from "../../utils/formatCurrency";
+import { resolveProductImage } from "../../utils/imageHelpers";
+import { useCart } from "../../context/CartContext";
+import { Ionicons } from "@expo/vector-icons";
 
 interface CartItemProps {
   item: CartItemType;
@@ -14,13 +14,22 @@ interface CartItemProps {
 
 export const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
   const { updateQuantity, removeItem } = useCart();
-  const [imageSource, setImageSource] = useState<{ uri: string } | number>(
-    require('../../assets/images/placeholder-product.png')
+  const [imageSource, setImageSource] = useState<ImageSourcePropType>(
+    require("../../assets/images/placeholder-product.png"),
   );
 
   useEffect(() => {
-    resolveProductImage(item.product._id).then(setImageSource);
-  }, [item.product._id]);
+    const loadImage = async () => {
+      const source = await resolveProductImage(
+        item.product._id,
+        item.product.slug,
+      );
+
+      setImageSource(source);
+    };
+
+    loadImage();
+  }, [item.product._id, item.product.slug]);
 
   return (
     <View style={styles.container}>
@@ -28,7 +37,9 @@ export const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
 
       <View style={styles.info}>
         <Text style={styles.brand}>{item.product.brand.toUpperCase()}</Text>
-        <Text style={styles.name} numberOfLines={2}>{item.product.name}</Text>
+        <Text style={styles.name} numberOfLines={2}>
+          {item.product.name}
+        </Text>
         <Text style={styles.price}>{formatCurrency(item.product.price)}</Text>
       </View>
 
@@ -37,11 +48,7 @@ export const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
           onPress={() => removeItem(item.product._id)}
           style={styles.deleteBtn}
         >
-          <Ionicons
-            name='trash'
-            size={20}
-            color="#f5f5f5"
-          />
+          <Ionicons name="trash" size={20} color="#f5f5f5" />
         </TouchableOpacity>
 
         <View style={styles.qtyRow}>
@@ -71,29 +78,65 @@ export const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     backgroundColor: colors.card,
     borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.border,
     marginBottom: spacing.sm,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: { width: 90, height: 90, backgroundColor: colors.cardAlt },
   info: { flex: 1, padding: spacing.sm },
-  brand: { fontSize: 9, fontWeight: '800', color: colors.primary, letterSpacing: 1 },
-  name: { fontSize: 12, fontWeight: '600', color: colors.textPrimary, lineHeight: 16, marginTop: 2 },
-  price: { fontSize: 13, fontWeight: '700', color: colors.accent, marginTop: spacing.xs },
-  controls: { padding: spacing.sm, alignItems: 'flex-end', justifyContent: 'space-between' },
+  brand: {
+    fontSize: 9,
+    fontWeight: "800",
+    color: colors.primary,
+    letterSpacing: 1,
+  },
+  name: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: colors.textPrimary,
+    lineHeight: 16,
+    marginTop: 2,
+  },
+  price: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: colors.accent,
+    marginTop: spacing.xs,
+  },
+  controls: {
+    padding: spacing.sm,
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
   deleteBtn: { padding: spacing.xs },
   deleteText: { fontSize: 14 },
-  qtyRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  qtyRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
   qtyBtn: {
-    width: 26, height: 26, borderRadius: radius.sm,
-    backgroundColor: colors.cardAlt, borderWidth: 1, borderColor: colors.border,
-    alignItems: 'center', justifyContent: 'center',
+    width: 26,
+    height: 26,
+    borderRadius: radius.sm,
+    backgroundColor: colors.cardAlt,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  qtyBtnText: { fontSize: 16, color: colors.textPrimary, fontWeight: '600', lineHeight: 20 },
-  qty: { fontSize: 14, fontWeight: '700', color: colors.textPrimary, minWidth: 20, textAlign: 'center' },
-  subtotal: { fontSize: 12, fontWeight: '700', color: colors.textSecondary },
+  qtyBtnText: {
+    fontSize: 16,
+    color: colors.textPrimary,
+    fontWeight: "600",
+    lineHeight: 20,
+  },
+  qty: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: colors.textPrimary,
+    minWidth: 20,
+    textAlign: "center",
+  },
+  subtotal: { fontSize: 12, fontWeight: "700", color: colors.textSecondary },
 });

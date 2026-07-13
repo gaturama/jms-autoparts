@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  type ImageSourcePropType,
 } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -42,7 +43,7 @@ export default function ProductDetailScreen() {
 
   const [product, setProduct] = useState<Product | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [imageSource, setImageSource] = useState<{ uri: string } | number>(
+  const [imageSource, setImageSource] = useState<ImageSourcePropType>(
     require("../../assets/images/placeholder-product.png"),
   );
   const [isLoading, setIsLoading] = useState(true);
@@ -55,18 +56,26 @@ export default function ProductDetailScreen() {
   const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      productService.getById(productId),
-      productService.getReviews(productId),
-    ])
-      .then(([p, r]) => {
+    const loadProduct = async () => {
+      try {
+        const [p, r] = await Promise.all([
+          productService.getById(productId),
+          productService.getReviews(productId),
+        ]);
+
         setProduct(p);
         setReviews(r);
-        return resolveProductImage(productId);
-      })
-      .then(setImageSource)
-      .catch(() => Alert.alert("Erro", "Produto não encontrado"))
-      .finally(() => setIsLoading(false));
+
+        const image = await resolveProductImage(productId, p.slug);
+        setImageSource(image);
+      } catch {
+        Alert.alert("Erro", "Produto não encontrado");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProduct();
   }, [productId]);
 
   const handleAddToCart = () => {
@@ -77,10 +86,11 @@ export default function ProductDetailScreen() {
       { text: "Continuar", style: "cancel" },
       {
         text: "Ver carrinho",
-        onPress: () => navigation.navigate("MainTabs", {
-          screen: "CartTab",
-          params: undefined,
-        }),
+        onPress: () =>
+          navigation.navigate("MainTabs", {
+            screen: "CartTab",
+            params: undefined,
+          }),
       },
     ]);
   };
@@ -185,9 +195,7 @@ export default function ProductDetailScreen() {
           <View style={styles.brandRow}>
             <Text style={styles.brand}>{product.brand.toUpperCase()}</Text>
             {category && <Badge label={category.name} variant="default" />}
-            {product.isFeatured && (
-              <Badge label="DESTAQUE" variant="accent" />
-            )}
+            {product.isFeatured && <Badge label="DESTAQUE" variant="accent" />}
           </View>
 
           <Text style={styles.productName}>{product.name}</Text>
@@ -303,9 +311,15 @@ export default function ProductDetailScreen() {
                         }
                       >
                         <Ionicons
-                          name={s <= reviewForm.rating ? "star" : "star-outline"}
+                          name={
+                            s <= reviewForm.rating ? "star" : "star-outline"
+                          }
                           size={26}
-                          color={s <= reviewForm.rating ? colors.star : colors.starEmpty}
+                          color={
+                            s <= reviewForm.rating
+                              ? colors.star
+                              : colors.starEmpty
+                          }
                         />
                       </TouchableOpacity>
                     ))}
@@ -363,9 +377,7 @@ export default function ProductDetailScreen() {
                       </View>
                       <View style={styles.reviewRating}>
                         <Ionicons name="star" size={12} color={colors.star} />
-                        <Text style={styles.reviewRatingText}>
-                          {r.rating}
-                        </Text>
+                        <Text style={styles.reviewRatingText}>{r.rating}</Text>
                       </View>
                     </View>
                     <Text style={styles.reviewComment}>{r.comment}</Text>

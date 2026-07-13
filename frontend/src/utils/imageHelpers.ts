@@ -1,4 +1,6 @@
+import { ImageSourcePropType } from 'react-native';
 import { storage, STORAGE_KEYS } from './storage';
+import { getBundledProductImage } from '../data/productImage';
 
 export const saveProductImage = async (productId: string, base64: string): Promise<void> => {
   await storage.set(STORAGE_KEYS.PRODUCT_IMAGES(productId), base64);
@@ -24,9 +26,14 @@ export const uriToBase64 = async (uri: string): Promise<string> => {
 };
 
 export const resolveProductImage = async (
-  productId: string
-): Promise<{ uri: string } | number> => {
+  productId: string,
+  slug?: string
+): Promise<ImageSourcePropType> => {
+  const bundled = getBundledProductImage(slug);
+  if (bundled) return bundled;
+
   const base64 = await getProductImage(productId);
   if (base64) return { uri: base64 };
+
   return require('../assets/images/placeholder-product.png');
 };

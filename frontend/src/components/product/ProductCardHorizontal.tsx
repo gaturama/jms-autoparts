@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  type ImageSourcePropType,
+} from "react-native";
 import { Product } from "../../types/product.types";
 import { useCart } from "../../context/CartContext";
 import { PriceTag } from "./PriceTag";
@@ -21,13 +28,18 @@ export const ProductCardHorizontal: React.FC<ProductCardHorizontalProps> = ({
   showAddToCart = true,
 }) => {
   const { addItem, isInCart } = useCart();
-  const [imageSource, setImageSource] = useState<{ uri: string } | number>(
+  const [imageSource, setImageSource] = useState<ImageSourcePropType>(
     require("../../assets/images/placeholder-product.png"),
   );
 
   useEffect(() => {
-    resolveProductImage(product._id).then(setImageSource);
-  }, [product._id]);
+    const loadImage = async () => {
+      const source = await resolveProductImage(product._id, product.slug);
+      setImageSource(source);
+    };
+
+    loadImage();
+  }, [product._id, product.slug]);
 
   const inCart = isInCart(product._id);
   const hasDiscount =

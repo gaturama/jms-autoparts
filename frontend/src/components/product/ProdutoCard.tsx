@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  type ImageSourcePropType
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Product } from '../../types/product.types';
@@ -23,13 +24,18 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onPress }) => {
-  const [imageSource, setImageSource] = useState<{ uri: string } | number>(
-    require('../../assets/images/placeholder-product.png')
-  );
-
-  useEffect(() => {
-    resolveProductImage(product._id).then(setImageSource);
-  }, [product._id]);
+  const [imageSource, setImageSource] = useState<ImageSourcePropType>(
+      require("../../assets/images/placeholder-product.png"),
+    );
+  
+    useEffect(() => {
+      const loadImage = async () => {
+        const source = await resolveProductImage(product._id, product.slug);
+        setImageSource(source);
+      };
+  
+      loadImage();
+    }, [product._id, product.slug]);
 
   const hasDiscount = !!product.originalPrice && product.originalPrice > product.price;
 
