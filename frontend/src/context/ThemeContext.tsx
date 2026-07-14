@@ -16,7 +16,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme] = useState<Theme>('dark');
 
   const toggleTheme = useCallback(() => {
-    console.log('Light mode não implementado ainda.');
   }, []);
 
   return (
