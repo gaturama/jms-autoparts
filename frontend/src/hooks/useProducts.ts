@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { Product, ProductFilters } from '../types/product.types';
 import { productService } from '../service/productService';
+import { getRecentlyViewedIds } from '../utils/recentlyViewed';
 
 export function useProducts(filters: ProductFilters = {}) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -56,6 +58,74 @@ export function useFeaturedProducts() {
       .catch(console.error)
       .finally(() => setIsLoading(false));
   }, []);
+
+  return { products, isLoading };
+}
+
+/**
+ * Busca os produtos completos correspondentes ao histórico de
+ * "vistos recentemente" salvo no AsyncStorage. Recarrega toda vez
+ * que a tela ganha foco, para refletir visualizações recém-feitas.
+ */
+export function useRecentlyViewedProducts(excludeId?: string) {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const load = useCallback(async () => {
+    try {
+      const ids = (await getRecentlyViewedIds()).filter((id) => id !== excludeId);
+      if (ids.length === 0) {
+        setProducts([]);
+        return;
+      }
+
+      const results = await Promise.all(
+        ids.slice(0, 10).map((id) => productService.getById(id).catch(() => null))
+      );
+
+      const found = results.filter((p): p is Product => p !== null);
+      // Mantém a ordem original (mais recente primeiro)
+      const ordered = ids
+        .map((id) => found.find((p) => p._id === id))
+        .filter((p): p is Product => !!p);
+
+      setProducts(ordered);
+    } catch {
+      setProducts([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [excludeId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      load();
+    }, [load])
+  );
+
+  return { products, isLoading };
+}
+
+export function useRelatedProducts(categoryId?: string, excludeId?: string) {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!categoryId) {
+      setProducts([]);
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    productService
+      .list({ category: categoryId, limit: 8 })
+      .then((res) => {
+        setProducts(res.data.filter((p) => p._id !== excludeId).slice(0, 6));
+      })
+      .catch(() => setProducts([]))
+      .finally(() => setIsLoading(false));
+  }, [categoryId, excludeId]);
 
   return { products, isLoading };
 }

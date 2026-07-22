@@ -40,4 +40,5 @@ export const STORAGE_KEYS = {
   USER: '@autoparts:user',
   CART: '@autoparts:cart',
   PRODUCT_IMAGES: (id: string) => `@autoparts:img:${id}`,
+  RECENTLY_VIEWED: '@autoparts:recently_viewed',
 } as const;

@@ -1,19 +1,32 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '../../styles/colors';
 import { spacing, radius } from '../../styles/spacing';
 
 type BadgeVariant = 'primary' | 'success' | 'error' | 'warning' | 'info' | 'default' | 'accent';
 
 interface BadgeProps {
-  label: string;
+  label?: string;
+  icon?: keyof typeof Ionicons.glyphMap;
   variant?: BadgeVariant;
   style?: ViewStyle;
 }
 
-export const Badge: React.FC<BadgeProps> = ({ label, variant = 'default', style }) => (
-  <View style={[styles.base, styles[variant], style]}>
-    <Text style={[styles.text, styles[`text_${variant}`]]}>{label}</Text>
+const ICON_COLOR: Record<BadgeVariant, string> = {
+  primary: colors.white,
+  success: colors.success,
+  error: colors.error,
+  warning: colors.warning,
+  info: colors.info,
+  default: colors.textSecondary,
+  accent: colors.accent,
+};
+
+export const Badge: React.FC<BadgeProps> = ({ label, icon, variant = 'default', style }) => (
+  <View style={[styles.base, styles[variant], style, icon && styles.baseWithIcon]}>
+    {icon && <Ionicons name={icon} size={10} color={ICON_COLOR[variant]} />}
+    {!!label && <Text style={[styles.text, styles[`text_${variant}`]]}>{label}</Text>}
   </View>
 );
 
@@ -25,6 +38,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     borderWidth: 1,
   },
+  baseWithIcon: { flexDirection: 'row', alignItems: 'center', gap: 3 },
   text: { fontSize: 10, fontWeight: '700', letterSpacing: 0.4 },
 
   primary: { backgroundColor: colors.primary, borderColor: colors.primary },

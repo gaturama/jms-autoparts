@@ -8,7 +8,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  type ImageSourcePropType,
+  ImageSourcePropType,
 } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -27,6 +27,9 @@ import { PriceTag } from "../../components/product/PriceTag";
 import { ProductRating } from "../../components/product/ProductRating";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { resolveProductImage } from "../../utils/imageHelpers";
+import { addRecentlyViewed } from "../../utils/recentlyViewed";
+import { useRelatedProducts } from "../../hooks/useProducts";
+import { ProductCard } from "../../components/product/ProdutoCard";
 import { formatDateFull } from "../../utils/formatDate";
 import { colors } from "../../styles/colors";
 import { spacing, radius } from "../../styles/spacing";
@@ -56,27 +59,31 @@ export default function ProductDetailScreen() {
   const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
-    const loadProduct = async () => {
-      try {
-        const [p, r] = await Promise.all([
-          productService.getById(productId),
-          productService.getReviews(productId),
-        ]);
-
+    Promise.all([
+      productService.getById(productId),
+      productService.getReviews(productId),
+    ])
+      .then(([p, r]) => {
         setProduct(p);
         setReviews(r);
-
-        const image = await resolveProductImage(productId, p.slug);
-        setImageSource(image);
-      } catch {
-        Alert.alert("Erro", "Produto não encontrado");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadProduct();
+        addRecentlyViewed(productId);
+        return resolveProductImage(productId, p.slug);
+      })
+      .then(setImageSource)
+      .catch(() => Alert.alert("Erro", "Produto não encontrado"))
+      .finally(() => setIsLoading(false));
   }, [productId]);
+
+  const categoryId =
+    product?.category && typeof product.category === "object"
+      ? product.category._id
+      : typeof product?.category === "string"
+        ? product.category
+        : undefined;
+  const { products: relatedProducts } = useRelatedProducts(
+    categoryId,
+    productId,
+  );
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -86,11 +93,7 @@ export default function ProductDetailScreen() {
       { text: "Continuar", style: "cancel" },
       {
         text: "Ver carrinho",
-        onPress: () =>
-          navigation.navigate("MainTabs", {
-            screen: "CartTab",
-            params: undefined,
-          }),
+        onPress: () => navigation.navigate("CartTab" as never),
       },
     ]);
   };
@@ -195,7 +198,9 @@ export default function ProductDetailScreen() {
           <View style={styles.brandRow}>
             <Text style={styles.brand}>{product.brand.toUpperCase()}</Text>
             {category && <Badge label={category.name} variant="default" />}
-            {product.isFeatured && <Badge label="DESTAQUE" variant="accent" />}
+            {product.isFeatured && (
+              <Badge icon="star" label="DESTAQUE" variant="accent" />
+            )}
           </View>
 
           <Text style={styles.productName}>{product.name}</Text>
@@ -388,6 +393,28 @@ export default function ProductDetailScreen() {
           )}
         </View>
 
+        {relatedProducts.length > 0 && (
+          <View style={styles.relatedSection}>
+            <Text style={styles.relatedTitle}>VOCÊ TAMBÉM PODE GOSTAR</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.relatedScroll}
+            >
+              {relatedProducts.map((p) => (
+                <View key={p._id} style={styles.relatedCard}>
+                  <ProductCard
+                    product={p}
+                    onPress={() =>
+                      navigation.push("ProductDetail", { productId: p._id })
+                    }
+                  />
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
         <View style={{ height: 120 }} />
       </ScrollView>
 
@@ -417,6 +444,18 @@ export default function ProductDetailScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
+
+  relatedSection: { marginTop: spacing.lg },
+  relatedTitle: {
+    fontSize: 11,
+    fontWeight: "800",
+    color: colors.textMuted,
+    letterSpacing: 2,
+    marginBottom: spacing.md,
+    paddingHorizontal: spacing.base,
+  },
+  relatedScroll: { paddingHorizontal: spacing.base, paddingBottom: spacing.xs },
+  relatedCard: { marginRight: spacing.sm },
 
   wishBtn: {
     width: 36,

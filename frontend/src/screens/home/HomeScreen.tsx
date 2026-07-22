@@ -6,7 +6,6 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  Image,
   Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -18,7 +17,7 @@ import { useFeaturedProducts } from "../../hooks/useProducts";
 import { categoryService } from "../../service/productService";
 import { Category } from "../../types/product.types";
 import { ProductCard } from "../../components/product/ProdutoCard";
-import { LoadingSpinner } from "../../components/common/LoadingSpinner";
+import { ProductGridSkeleton } from "../../components/product/ProductGridSkeleton";
 import { colors } from "../../styles/colors";
 import { spacing, radius } from "../../styles/spacing";
 import { fonts } from "../../styles/typography";
@@ -158,7 +157,7 @@ export default function HomeScreen() {
           </View>
 
           {loadingFeatured ? (
-            <LoadingSpinner />
+            <ProductGridSkeleton count={4} />
           ) : (
             <FlatList
               data={featured}
